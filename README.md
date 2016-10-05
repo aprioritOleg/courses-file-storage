@@ -1,1 +1,1 @@
-# courses-file-storage
+Students' project "Web File storage"
