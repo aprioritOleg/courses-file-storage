@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudStorage.UI", "CloudStorage.UI\CloudStorage.UI.csproj", "{739C0508-C8DE-483E-8D45-FA698F5EF4E1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{92DE4EA5-3BDB-4A3C-9A7E-82F3E6D5B205}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudStorage.Domain", "CloudStorage.Domain\CloudStorage.Domain.csproj", "{E23409DD-BAFD-4AF5-817C-27D7F8D234F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudStorage.Services", "CloudStorage.Services\CloudStorage.Services.csproj", "{3DC5988A-EF6D-425B-85AC-853893C749EC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{6C568EF2-FB41-4442-B86D-6F565CAD798A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", "{351C0061-0E48-4C1C-B766-B6BEC851BA26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudStorage.Data.MsSql", "CloudStorage.Data.MsSql\CloudStorage.Data.MsSql.csproj", "{E0990C9A-0FFA-47A1-AE52-42CE6DBAD6F6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{739C0508-C8DE-483E-8D45-FA698F5EF4E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{739C0508-C8DE-483E-8D45-FA698F5EF4E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{739C0508-C8DE-483E-8D45-FA698F5EF4E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{739C0508-C8DE-483E-8D45-FA698F5EF4E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E23409DD-BAFD-4AF5-817C-27D7F8D234F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E23409DD-BAFD-4AF5-817C-27D7F8D234F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E23409DD-BAFD-4AF5-817C-27D7F8D234F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E23409DD-BAFD-4AF5-817C-27D7F8D234F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DC5988A-EF6D-425B-85AC-853893C749EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DC5988A-EF6D-425B-85AC-853893C749EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DC5988A-EF6D-425B-85AC-853893C749EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DC5988A-EF6D-425B-85AC-853893C749EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0990C9A-0FFA-47A1-AE52-42CE6DBAD6F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0990C9A-0FFA-47A1-AE52-42CE6DBAD6F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0990C9A-0FFA-47A1-AE52-42CE6DBAD6F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0990C9A-0FFA-47A1-AE52-42CE6DBAD6F6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E23409DD-BAFD-4AF5-817C-27D7F8D234F5} = {92DE4EA5-3BDB-4A3C-9A7E-82F3E6D5B205}
+		{3DC5988A-EF6D-425B-85AC-853893C749EC} = {92DE4EA5-3BDB-4A3C-9A7E-82F3E6D5B205}
+		{739C0508-C8DE-483E-8D45-FA698F5EF4E1} = {6C568EF2-FB41-4442-B86D-6F565CAD798A}
+		{E0990C9A-0FFA-47A1-AE52-42CE6DBAD6F6} = {351C0061-0E48-4C1C-B766-B6BEC851BA26}
+	EndGlobalSection
+EndGlobal
