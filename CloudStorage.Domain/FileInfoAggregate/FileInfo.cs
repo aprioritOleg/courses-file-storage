@@ -5,7 +5,7 @@
     /// <summary>
     /// Represents a domain model of file.
     /// </summary>
-    public class File
+    public class FileInfo
     {
         private string _name;
 
@@ -27,7 +27,7 @@
 
             set
             {
-                if (!FileValidation.IsValidName(value))
+                if (!FileInfoValidation.IsValidName(value))
                 {
                     throw new ArgumentException("Wrong name of file");
                 }
@@ -41,5 +41,11 @@
         /// </summary>
         /// <value>Creation date.</value>
         public DateTime CreationDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating where extension of file.
+        /// </summary>
+        /// <value>Extension of file.</value>
+        public string Extension { get; set; }        
     }
 }

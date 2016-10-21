@@ -8,11 +8,11 @@
     /// </summary>
     public interface IFileService
     {
-        void Create(File file);
+        void Create(FileInfo file);
 
-        void Edit(File file);
+        void Edit(FileInfo file);
 
-        File Get(int id);
+        FileInfo Get(int id);
 
         void Delete(int id);
     }

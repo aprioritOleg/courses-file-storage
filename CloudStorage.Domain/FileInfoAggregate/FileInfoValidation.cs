@@ -6,7 +6,7 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    public static class FileValidation
+    public static class FileInfoValidation
     {
         /// <summary>
         /// Validates the name of file.

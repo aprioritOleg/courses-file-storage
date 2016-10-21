@@ -254,9 +254,9 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CloudStorage.Data.MsSql\CloudStorage.Data.MsSql.csproj">
+    <ProjectReference Include="..\CloudStorage.Data.MsSql\CloudStorage.Entity.csproj">
       <Project>{e0990c9a-0ffa-47a1-ae52-42ce6dbad6f6}</Project>
-      <Name>CloudStorage.Data.MsSql</Name>
+      <Name>CloudStorage.Entity</Name>
     </ProjectReference>
     <ProjectReference Include="..\CloudStorage.Domain\CloudStorage.Domain.csproj">
       <Project>{e23409dd-bafd-4af5-817c-27d7f8d234f5}</Project>

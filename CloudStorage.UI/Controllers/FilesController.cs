@@ -19,9 +19,9 @@
         private readonly IFileService _fileService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TournamentsController"/> class
+        /// Initializes a new instance of the <see cref="FilesController"/> class
         /// </summary>
-        /// <param name="tournamentService">The tournament service</param>
+        /// <param name="fileService">The tournament service</param>
         public FilesController(IFileService fileService)
         {
             this._fileService = fileService;
@@ -29,7 +29,7 @@
 
         public ActionResult Index()
         {
-            File file = new File() { Name = "sfsef", CreationDate = DateTime.Now };
+            FileInfo file = new FileInfo() { Name = "sfsef", CreationDate = DateTime.Now };
 
             this._fileService.Create(file);
             return View();

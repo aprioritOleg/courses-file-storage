@@ -64,6 +64,7 @@ namespace CloudStorage.UI.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind<IFileService>().To<FileService>();
+            kernel.Bind<IFileInfoRepository>().To<FileInfoRepository>();
             kernel.Bind<IFileRepository>().To<FileRepository>();
         }        
     }

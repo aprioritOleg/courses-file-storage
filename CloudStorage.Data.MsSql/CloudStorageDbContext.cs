@@ -11,6 +11,7 @@
 
         public CloudStorageDbContext(string connectionName) : base(connectionName) { }
 
-        public DbSet<File> Files { get; set; }
+        public DbSet<FileInfo> Files { get; set; }
+
     }
 }
