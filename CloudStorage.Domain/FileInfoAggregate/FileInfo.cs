@@ -1,6 +1,7 @@
 ﻿namespace CloudStorage.Domain.FileAggregate
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Represents a domain model of file.
@@ -46,6 +47,17 @@
         /// Gets or sets a value indicating where extension of file.
         /// </summary>
         /// <value>Extension of file.</value>
-        public string Extension { get; set; }        
+        public string Extension { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating where owher id.
+        /// </summary>
+        public int OwnerId { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating where users.
+        /// </summary>
+        /// <value>Users.</value>
+        public virtual ICollection<User> Users { get; set; }
     }
 }

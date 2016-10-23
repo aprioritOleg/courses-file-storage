@@ -29,10 +29,34 @@
 
         public ActionResult Index()
         {
-            FileInfo file = new FileInfo() { Name = "sfsef", CreationDate = DateTime.Now };
+            FileInfo file = new FileInfo() { Name = "test", CreationDate = DateTime.Now, Extension = "txt" };
 
             this._fileService.Create(file);
             return View();
+        }
+
+        [HttpPost]
+        public JsonResult Download(int fileId)
+        {
+            var file = this._fileService.GetFileById(fileId);
+
+            if (file == null)
+            {
+                return Json("File does not exist.");
+            }
+
+            HttpResponse response = System.Web.HttpContext.Current.Response;
+            response.ClearContent();
+            response.Clear();
+            response.ContentType = "text/plain";
+            response.AddHeader("Content-Disposition",
+                               "attachment; filename=" + file.Name + "." + file.Extension);
+            string pathToFile = String.Format("~/{0}/{1}.dat", file.OwnerId, file.Id);
+            response.TransmitFile(Server.MapPath(pathToFile));
+            response.Flush();
+            response.End();
+
+            return Json("Success");
         }
 	}
 }

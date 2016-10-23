@@ -50,5 +50,16 @@
         {
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// Get information about file by id.
+        /// </summary>
+        /// <param name="id">Identifier of file.</param>
+        /// <returns>Information about file.</returns>
+        public FileInfo GetFileById(int id)
+        {
+            var file = this._db.Files.Where(f => f.Id == id).SingleOrDefault();
+            return (FileInfo)file;
+        }
     }
 }

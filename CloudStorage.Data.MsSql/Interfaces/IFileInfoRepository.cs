@@ -12,5 +12,7 @@
         void Update(FileInfo updatedFile);
 
         void Remove(int id);
+
+        FileInfo GetFileById(int id);
     }
 }

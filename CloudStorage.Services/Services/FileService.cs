@@ -15,17 +15,15 @@
     public class FileService : IFileService
     {
         private readonly IFileInfoRepository _fileInfoRepository;
-        private readonly IFileRepository _fileRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileService"/> class.
         /// </summary>
         /// <param name="fileInfoRepository">Instance of class which implements <see cref="IFileInfoRepository"/>.</param>        
         /// <param name="fileRepository">Instance of class which implements <see cref="IFileRepository"/>.</param>        
-        public FileService(IFileInfoRepository fileInfoRepository, IFileRepository fileRepository)
+        public FileService(IFileInfoRepository fileInfoRepository)
         {
             this._fileInfoRepository = fileInfoRepository;
-            this._fileRepository = fileRepository;
         }
 
         /// <summary>
@@ -36,16 +34,7 @@
         {
             _fileInfoRepository.Add(file);
         }
-
-        /// <summary>
-        /// Gets file by its identifier.
-        /// </summary>
-        /// <param name="id">Identifier of file.</param>     
-        public FileInfo Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         /// <summary>
         /// Edits specified instance of file.
         /// </summary>
@@ -62,6 +51,16 @@
         public void Delete(int id)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Get information about file by id.
+        /// </summary>
+        /// <param name="id">Identifier of file.</param>
+        /// <returns>Information about file.</returns>
+        public FileInfo GetFileById(int id)
+        {
+            return this._fileInfoRepository.GetFileById(id);
         }
     }
 }

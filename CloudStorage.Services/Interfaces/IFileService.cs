@@ -12,7 +12,7 @@
 
         void Edit(FileInfo file);
 
-        FileInfo Get(int id);
+        FileInfo GetFileById(int id);
 
         void Delete(int id);
     }
