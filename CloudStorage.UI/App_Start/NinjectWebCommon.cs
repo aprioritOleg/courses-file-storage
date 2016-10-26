@@ -5,13 +5,13 @@ namespace CloudStorage.UI.App_Start
 {
     using CloudStorage.Services.Interfaces;
     using CloudStorage.Services.Services;
-    using CloudStorage.Data.MsSql.Interfaces;
-    using CloudStorage.Data.MsSql.Repositories;
     using System;
     using System.Web;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
     using Ninject;
     using Ninject.Web.Common;
+    using CloudStorage.Entity.Interfaces;
+    using CloudStorage.Entity.Repositories;
 
     public static class NinjectWebCommon 
     {

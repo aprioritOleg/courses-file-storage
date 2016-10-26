@@ -1,6 +1,6 @@
-﻿namespace CloudStorage.Data.MsSql.Repositories
+﻿namespace CloudStorage.Entity.Repositories
 {
-    using CloudStorage.Data.MsSql.Interfaces;
+    using CloudStorage.Entity.Interfaces;
     using CloudStorage.Domain.FileAggregate;
     using System;
     using System.Collections.Generic;

@@ -1,7 +1,7 @@
 ﻿namespace CloudStorage.Services.Services
 {
-    using CloudStorage.Data.MsSql.Interfaces;
     using CloudStorage.Domain.FileAggregate;
+    using CloudStorage.Entity.Interfaces;
     using CloudStorage.Services.Interfaces;
     using System;
     using System.Collections.Generic;

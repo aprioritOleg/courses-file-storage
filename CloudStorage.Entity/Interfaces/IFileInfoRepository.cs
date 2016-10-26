@@ -1,4 +1,4 @@
-﻿namespace CloudStorage.Data.MsSql.Interfaces
+﻿namespace CloudStorage.Entity.Interfaces
 {
     using CloudStorage.Domain.FileAggregate;
 

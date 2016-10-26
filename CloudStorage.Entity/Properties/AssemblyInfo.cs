@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CloudStorage.Data.MsSql")]
+[assembly: AssemblyTitle("CloudStorage.Entity")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("CloudStorage.Data.MsSql")]
+[assembly: AssemblyProduct("CloudStorage.Entity")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("45cd75e9-d31e-49ec-983b-941439b6593f")]
+[assembly: Guid("6a965d74-89b2-4be9-bfdb-d8c7c51e6df0")]
 
 // Version information for an assembly consists of the following four values:
 //

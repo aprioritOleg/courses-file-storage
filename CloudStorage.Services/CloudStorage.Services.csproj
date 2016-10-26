@@ -45,13 +45,13 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\CloudStorage.Data.MsSql\CloudStorage.Entity.csproj">
-      <Project>{e0990c9a-0ffa-47a1-ae52-42ce6dbad6f6}</Project>
-      <Name>CloudStorage.Entity</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CloudStorage.Domain\CloudStorage.Domain.csproj">
       <Project>{e23409dd-bafd-4af5-817c-27d7f8d234f5}</Project>
       <Name>CloudStorage.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CloudStorage.Entity\CloudStorage.Entity.csproj">
+      <Project>{6c3e58b9-6341-4c49-bf3a-9c826ceee452}</Project>
+      <Name>CloudStorage.Entity</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
