@@ -7,7 +7,7 @@
     /// </summary>
     public interface IFileInfoRepository
     {
-        void Add(FileInfo newFile);
+        int Add(FileInfo newFile);
 
         void Update(FileInfo updatedFile);
 

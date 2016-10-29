@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -16,6 +17,11 @@ namespace CloudStorage.UI
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            string path = ConfigurationManager.AppSettings["PathUserData"].ToString();
+
+            if (!System.IO.Directory.Exists(Server.MapPath(path)))
+                System.IO.Directory.CreateDirectory(Server.MapPath(path));
         }
     }
 }

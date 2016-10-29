@@ -52,7 +52,7 @@
         /// <summary>
         /// Gets or sets a value indicating where owher id.
         /// </summary>
-        public int OwnerId { get; set; }
+        public string OwnerId { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating where users.

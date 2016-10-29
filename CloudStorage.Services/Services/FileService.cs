@@ -8,6 +8,10 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using System.Web;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Configuration;
 
     /// <summary>
     /// Defines an implementation of <see cref="IFileService"/> contract.
@@ -30,18 +34,36 @@
         /// Creates a new file.
         /// </summary>
         /// <param name="file">File to create.</param>
-        public void Create(FileInfo file)
+        public void Create(Domain.FileAggregate.FileInfo file, HttpPostedFileBase httpFileBase, string pathToUserDirectory)
         {
-            _fileInfoRepository.Add(file);
+            //Adding information about file to database using FileInfoRepository
+            //and return fileID of added file
+            int fileID = _fileInfoRepository.Add(file);
+            
+            //Writing file on server
+            if (httpFileBase != null && httpFileBase.ContentLength > 0)
+            {
+                var fileName = fileID + ".dat";
+                var filePath = Path.Combine(HttpContext.Current.Server.MapPath(pathToUserDirectory), fileName);
+       
+                httpFileBase.SaveAs(filePath);
+            }
         }
-        
-        /// <summary>
-        /// Edits specified instance of file.
-        /// </summary>
-        /// <param name="fileToEdit">File to update.</param>
-        public void Edit(FileInfo fileToEdit)
+
+        //Return list of files
+        //This method will be changed after adding tree view, which
+        //allows to add virtual directories
+        public List<string> getListFiles(string pathToUserDirectory)
         {
-            throw new NotImplementedException();
+            List<string> items = new List<string>();
+            var dir = new DirectoryInfo(HttpContext.Current.Server.MapPath(pathToUserDirectory));
+            System.IO.FileInfo[] fileNames = dir.GetFiles("*.*");
+
+            foreach (var file in fileNames)
+            {
+                items.Add(file.Name);
+            }
+            return items;
         }
 
         /// <summary>
@@ -58,9 +80,19 @@
         /// </summary>
         /// <param name="id">Identifier of file.</param>
         /// <returns>Information about file.</returns>
-        public FileInfo GetFileById(int id)
+        public Domain.FileAggregate.FileInfo GetFileById(int id)
         {
             return this._fileInfoRepository.GetFileById(id);
+        }
+
+        public void Edit(Domain.FileAggregate.FileInfo file)
+        {
+            throw new NotImplementedException();
+        }
+
+        Domain.FileAggregate.FileInfo IFileService.GetFileById(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

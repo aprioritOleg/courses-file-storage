@@ -3,12 +3,20 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-
+    <title>@ViewBag.Title - Cloud Storage</title>
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/style-browsing-files.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Treeview/style-tree-view.css")" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/scripts_uploading_files/upload-file-ajax.js"></script>
+    <script src="~/Scripts/scripts_uploading_files/right-click-menu.js"></script>
+    <script src="~/Scripts/scripts_uploading_files/drag-and-drop.js"></script>
+    <script src="~/Scripts/scripts-treeview/treeview.js"></script>
 </head>
-<body>
+<body onclick="HideMenu('contextMenu');" oncontextmenu="return false">
+    <!--Navigation bar with registration-->
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -17,23 +25,44 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", null, new { @class = "navbar-brand" })
+                @Html.ActionLink("Cloud Storage", "Index", "Home", null, new { @class = "navbar-brand" })
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
+            <div class="navbar-collapse">
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
+    </div>
+
+    @Html.Hidden("MyURL", @Url.Action("Upload", "Files"))
+    <input type="file" id="inputUpload" style="display: none" name="files" class="multiple" multiple>
+
+    <!--custom right-click menu that allows to add files and folders-->
+    <div style="display:none; " id="contextMenu">
+        <table border="0" cellpadding="0" cellspacing="0"
+               style="border: thin solid #808080; cursor: default;" width="100px"
+               bgcolor="White">
+            <tr>
+                <td>
+                    <div onclick="addFiles()" onmouseup=" ShowMenu('contextMenu', 'none' , event);" class="ContextItem">Upload files</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div onclick="javascript:alert('You Clicked '+this.innerHTML);" onmouseup="ShowMenu('contextMenu','none',event);" class="ContextItem">Create folder</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div onclick="javascript:alert('You Clicked '+this.innerHTML);" onmouseup="ShowMenu('contextMenu','none',event);" class="ContextItem">Add note</div>
+                </td>
+            </tr>
+        </table>
     </div>
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Cloud Storage</p>
         </footer>
     </div>
 

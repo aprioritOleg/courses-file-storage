@@ -1,0 +1,37 @@
+﻿ html, body { 
+      background-color: ghostwhite;
+  
+      padding: 0;
+    overflow: hidden;
+ }
+        .ContextItem {
+            background-color: White;
+            color: Black;
+            font-weight: normal;
+        }
+
+            .ContextItem:hover {
+                background-color: #0066FF;
+                color: White;
+                font-weight: bold;
+            }
+             .bottom-three {
+                margin-bottom: 30cm;
+             }
+             #dropArea {
+      background-color: lightsteelblue;
+        margin-right: auto;
+        margin-left: auto; 
+        width: 800px; 
+        height: 400px;
+        margin-top: 20%; 
+        }
+            #progressBar {
+               position: fixed;
+                bottom: 0;
+                right: 0;
+            }
+          .property-align-center {
+            text-align: center;
+        }
+

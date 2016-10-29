@@ -27,12 +27,15 @@
         /// Adds new file.
         /// </summary>
         /// <param name="newFile">The file for adding.</param>
-        public void Add(FileInfo newFile)
+        public int Add(FileInfo newFile)
         {
             this._db.Files.Add(newFile);
             this._db.SaveChanges();
-        }
 
+            _db.FileSystemStructure.Add(new FileSystemStructure() { FileID = newFile.Id, ParentID = 25});
+            _db.SaveChanges();
+            return newFile.Id; 
+        }
         /// <summary>
         /// Updates specified file.
         /// </summary>

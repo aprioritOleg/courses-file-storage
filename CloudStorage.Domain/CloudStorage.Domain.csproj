@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="FileInfoAggregate\FileInfo.cs" />
     <Compile Include="FileInfoAggregate\FileInfoValidation.cs" />
+    <Compile Include="FileInfoAggregate\FileSystemStructure.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>
