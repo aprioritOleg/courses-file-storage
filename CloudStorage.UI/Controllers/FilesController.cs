@@ -4,9 +4,10 @@
     using CloudStorage.Domain.FileAggregate;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Web;
     using System.Web.Mvc;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
 
     /// <summary>
     /// Defines FilesController
@@ -29,34 +30,52 @@
 
         public ActionResult Index()
         {
-            FileInfo file = new FileInfo() { Name = "test", CreationDate = DateTime.Now, Extension = "txt" };
-
-            this._fileService.Create(file);
             return View();
         }
 
-        [HttpPost]
-        public JsonResult Download(int fileId)
+        /// <summary>
+        /// Download file.
+        /// </summary>
+        /// <param name="id">Identifier of file.</param>
+        /// <returns>File for download.</returns>
+        public ActionResult Download(int id)
         {
-            var file = this._fileService.GetFileById(fileId);
+            var file = this._fileService.GetFileById(id, User.Identity.GetUserId());
 
             if (file == null)
             {
-                return Json("File does not exist.");
+                return HttpNotFound();
             }
 
-            HttpResponse response = System.Web.HttpContext.Current.Response;
-            response.ClearContent();
-            response.Clear();
-            response.ContentType = "text/plain";
-            response.AddHeader("Content-Disposition",
-                               "attachment; filename=" + file.Name + "." + file.Extension);
-            string pathToFile = String.Format("~/{0}/{1}.dat", file.OwnerId, file.Id);
-            response.TransmitFile(Server.MapPath(pathToFile));
-            response.Flush();
-            response.End();
+            return File(Url.Content(Server.MapPath(file.PathToFile))
+                                    , GetContentType(file.Extension)
+                                    , file.FullName);
+        }
 
-            return Json("Success");
+        /// <summary>
+        /// Get type of content that depends on of the file extension.
+        /// </summary>
+        /// <param name="extension">Extension of file.</param>
+        /// <returns>Content type.</returns>
+        private string GetContentType(string extension)
+        {
+            switch (extension)
+            {
+                case "txt":
+                    return "text/plain";
+                case "jpeg":
+                    return "image/pneg";
+                case "jpg":
+                    return "image/jpg";
+                case "png":
+                    return "image/png";
+                case "pdf":
+                    return "application/pdf";
+                case ".flv":
+                    return "video/x-flv";
+                default:
+                    return "application/unknown";
+            }
         }
 	}
 }
