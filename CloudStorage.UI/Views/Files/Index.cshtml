@@ -1,4 +1,4 @@
-﻿@model List<CloudStorage.UI.Models.TreeViewStructure>
+﻿@model List<CloudStorage.Domain.FileAggregate.FileInfo>
 @{
     ViewBag.Title = "Index";
 }
@@ -49,16 +49,9 @@
         width: auto;
     }
 </style>
-<!--Drawing tree view-->
-<div class="divTreeView">
-    <div class="treeview">
-        @if (Model != null && Model.Count() > 0)
-            {
-            <ul>
-                @Treeview.GetTreeView(Model, Model.FirstOrDefault().ParentID)
-            </ul>
-        }
-    </div>
-</div>
+
+
+@Html.Partial("PartialViewTreeview", Model)
+
 <!--Displays in area icons and names of files-->
 @Html.Partial("PartialViewBrowsingFIles")

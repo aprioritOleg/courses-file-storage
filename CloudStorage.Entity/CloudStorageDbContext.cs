@@ -14,6 +14,5 @@
         public CloudStorageDbContext(string connectionName) : base(connectionName) { }
 
         public DbSet<FileInfo> Files { get; set; }
-        public DbSet<FileSystemStructure> FileSystemStructure { get; set; }
     }
 }

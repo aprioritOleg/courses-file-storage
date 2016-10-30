@@ -10,7 +10,6 @@
     using Microsoft.AspNet.Identity;
     using System.Configuration;
     using System.IO;
-    using Models;
     using Entity;
 
     /// <summary>
@@ -30,51 +29,58 @@
         {
             this._fileService = fileService;
         }
-        private List<TreeViewStructure> setDataInTreeview()
+        private List<Domain.FileAggregate.FileInfo> setDataInTreeview()
         {
             //This list will be returned to view Treeview.cshtml
-            List<TreeViewStructure> treeViewList = new List<TreeViewStructure>();
+            List<Domain.FileAggregate.FileInfo> treeViewList = new List<Domain.FileAggregate.FileInfo>();
+            
+            //ID logged in user
+            string currentUserID = User.Identity.GetUserId();
+
+            //Select all files logged in user
             using (var context = new CloudStorageDbContext())
             {
-                //Get all data from table FileSystemStructure
-                var allFiles = context.FileSystemStructure.ToList();
-
-                //Select files, which belong to current user
-                foreach (var file in allFiles)
-                {
-                    Domain.FileAggregate.FileInfo fFile = context.Files.SingleOrDefault(file1 => file1.Id == file.FileID);
-                    if (fFile.OwnerId == User.Identity.GetUserId())
-                    {
-                        TreeViewStructure element = new TreeViewStructure()
-                        {
-                            FileSystemStructureID = fFile.Id,
-                            Name = fFile.Name,
-                            ParentID = file.ParentID
-                        };
-                        //System.Diagnostics.Debug.WriteLine("FF " + fFile.Id + " " + fFile.Name + " " + file.ParentID);
-                        treeViewList.Add(element);
-                    }
-                }
+                treeViewList = context.Files.Where(u => u.OwnerId == currentUserID).ToList();
             }
             return treeViewList;
         }
         public ActionResult Index()
         {
             CreateUserFolder();
-            ViewBag.DataIconsFiles = _fileService.getListFiles(getPathToUserFolder());
+            Session["currentFolderID"] = 0; //0 - root folder
+            ViewBag.DataIconsFiles = GetDataFromSpecificFolder(0);
             return View("Index", setDataInTreeview());
         }
+        public List<string> GetDataFromSpecificFolder(int currentSystemID)
+        {
+            List<string> listFileNames = new List<string>();
+
+            //ID logged in user
+            string currentUserID = User.Identity.GetUserId();
+
+            using (var context = new CloudStorageDbContext())
+            {
+                //Select files which belong to current user in specific folder
+                var allFiles = context.Files.Where(u => u.ParentID == currentSystemID).Where(user => user.OwnerId == currentUserID);
+                foreach (var file in allFiles)
+                {
+                     listFileNames.Add(file.Name);
+                }
+            }
+            return listFileNames;
+        }
+        //Returns user's files in specific folder 
         public ActionResult ShowUserFiles(int fileSystemStructureID)
         {
-            System.Diagnostics.Debug.WriteLine("fileSystemStructureID = " + fileSystemStructureID);
-            return RedirectToAction("Index");
+            Session["currentFolderID"] = fileSystemStructureID;
+            ViewBag.DataIconsFiles = GetDataFromSpecificFolder(fileSystemStructureID);
+            return PartialView("PartialViewBrowsingFiles");
         }
-
         //Creation user folder after registration
         private void CreateUserFolder()
         {
-            if (!System.IO.Directory.Exists(Server.MapPath(getPathToUserFolder())))
-                System.IO.Directory.CreateDirectory(Server.MapPath(getPathToUserFolder()));
+            if (!Directory.Exists(Server.MapPath(getPathToUserFolder())))
+                Directory.CreateDirectory(Server.MapPath(getPathToUserFolder()));
         }
         [HttpPost]
         public ActionResult Upload()
@@ -86,13 +92,24 @@
                                                                         Name = Request.Files[fileName].FileName,
                                                                         CreationDate = DateTime.Now,
                                                                         Extension = Path.GetExtension(Request.Files[fileName].FileName),
-                                                                        OwnerId = User.Identity.GetUserId()
-                                                                         },
+                                                                        OwnerId = User.Identity.GetUserId(),
+                                                                        ParentID = (int)Session["currentFolderID"]
+                                                                        },
                                                                         Request.Files[fileName], getPathToUserFolder());
             }
-            ViewBag.DataIconsFiles = _fileService.getListFiles(getPathToUserFolder());
-            //return PartialView("PartialViewBrowsingFiles", _fileService.getListFiles(getPathToUserFolder()));
             return PartialView("PartialViewBrowsingFiles");
+        }
+        [HttpPost]
+        public PartialViewResult AddFolder(string folderName)
+        {
+            _fileService.AddNewFolder(new Domain.FileAggregate.FileInfo() {
+                                                                            Name = folderName,
+                                                                            CreationDate = DateTime.Now,
+                                                                            OwnerId = User.Identity.GetUserId(),
+                                                                            ParentID = (int)Session["currentFolderID"]
+
+                                                                        });
+            return PartialView("PartialViewTreeview", setDataInTreeview());
         }
         //Returns the physical path to user folder on server
         private string getPathToUserFolder()

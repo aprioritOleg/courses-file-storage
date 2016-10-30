@@ -12,6 +12,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Configuration;
+    using Entity;
 
     /// <summary>
     /// Defines an implementation of <see cref="IFileService"/> contract.
@@ -50,22 +51,23 @@
             }
         }
 
-        //Return list of files
-        //This method will be changed after adding tree view, which
-        //allows to add virtual directories
-        public List<string> getListFiles(string pathToUserDirectory)
+        public void AddNewFolder(Domain.FileAggregate.FileInfo folder)
         {
-            List<string> items = new List<string>();
-            var dir = new DirectoryInfo(HttpContext.Current.Server.MapPath(pathToUserDirectory));
-            System.IO.FileInfo[] fileNames = dir.GetFiles("*.*");
-
-            foreach (var file in fileNames)
-            {
-                items.Add(file.Name);
-            }
-            return items;
+            _fileInfoRepository.Add(folder);
         }
 
+       /* public List<Domain.FileAggregate.FileInfo> GetDataFromSpecificFolder(int currentSystemID)
+        {
+            //Request from tables 
+            CloudStorageDbContext dbContext = new CloudStorageDbContext();
+
+            var allFiles = dbContext.FileSystemStructure.ToList();
+
+            using (var context = new CloudStorageDbContext())
+            {
+
+            }
+        }*/
         /// <summary>
         /// Deletes file by its identifier.
         /// </summary>

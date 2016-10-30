@@ -31,9 +31,7 @@
         {
             this._db.Files.Add(newFile);
             this._db.SaveChanges();
-
-            _db.FileSystemStructure.Add(new FileSystemStructure() { FileID = newFile.Id, ParentID = 25});
-            _db.SaveChanges();
+            
             return newFile.Id; 
         }
         /// <summary>

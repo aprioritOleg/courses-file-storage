@@ -4,9 +4,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Cloud Storage</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
     <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/Content/style-browsing-files.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/Content/Treeview/style-tree-view.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/dialog/dialog.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/dialog/jquery-ui.css")" rel="stylesheet" type="text/css" />
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
@@ -14,6 +18,15 @@
     <script src="~/Scripts/scripts_uploading_files/right-click-menu.js"></script>
     <script src="~/Scripts/scripts_uploading_files/drag-and-drop.js"></script>
     <script src="~/Scripts/scripts-treeview/treeview.js"></script>
+    <script src="~/Scripts/displays-files/show-files-in-folder.js"></script>
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script src="~/Scripts/jquery-ui.min.js"></script>
+
+    
+    <script src="~/Scripts/scripts_uploading_files/add-folder.js"></script>
+    <script src="~/Scripts/scripts_uploading_files/dialog.js"></script>
+
+
 </head>
 <body onclick="HideMenu('contextMenu');" oncontextmenu="return false">
     <!--Navigation bar with registration-->
@@ -36,7 +49,9 @@
     @Html.Hidden("MyURL", @Url.Action("Upload", "Files"))
     <input type="file" id="inputUpload" style="display: none" name="files" class="multiple" multiple>
 
+
     <!--custom right-click menu that allows to add files and folders-->
+    <br /> <br />
     <div style="display:none; " id="contextMenu">
         <table border="0" cellpadding="0" cellspacing="0"
                style="border: thin solid #808080; cursor: default;" width="100px"
@@ -48,7 +63,7 @@
             </tr>
             <tr>
                 <td>
-                    <div onclick="javascript:alert('You Clicked '+this.innerHTML);" onmouseup="ShowMenu('contextMenu','none',event);" class="ContextItem">Create folder</div>
+                    <div onclick="addFolder()" onmouseup=" ShowMenu('contextMenu', 'none' , event);" class="ContextItem">Add folder</div>
                 </td>
             </tr>
             <tr>
@@ -58,16 +73,28 @@
             </tr>
         </table>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Cloud Storage</p>
-        </footer>
+    <!--Dialog box-->
+    <div class="containerDialog">
+            <div id="dialog" title="New folder">
+                <form action="" method="post" onsubmit="return false">
+                    <label>Name:</label>
+                    <input id="name" name="name" type="text">
+                    <input id="submit" type="submit" value="Create">
+                </form>
+            </div>
     </div>
+            <div class="container body-content">
+                @RenderBody()
+                <hr />
+                <footer>
+                    <p>&copy; @DateTime.Now.Year - Cloud Storage</p>
+                </footer>
+            </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+
+            @Scripts.Render("~/bundles/bootstrap")
+            @RenderSection("scripts", required: false)
+
+
 </body>
 </html>

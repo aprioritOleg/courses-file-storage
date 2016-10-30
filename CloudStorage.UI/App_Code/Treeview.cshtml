@@ -1,9 +1,9 @@
-﻿@helper GetTreeView(List<CloudStorage.UI.Models.TreeViewStructure> fileSctructure, int parentID)
+﻿@helper GetTreeView(List<CloudStorage.Domain.FileAggregate.FileInfo> fileSctructure, int parentID)
 {
 foreach (var i in fileSctructure.Where(a => a.ParentID.Equals(parentID)))
 {
         <li>
-            @{var submenu = fileSctructure.Where(a => a.ParentID.Equals(i.FileSystemStructureID)).Count();}
+            @{var submenu = fileSctructure.Where(a => a.ParentID.Equals(i.Id)).Count();}
             @if (submenu > 0)
             {
                 <span class="collapse collapsible">&nbsp;</span>
@@ -13,12 +13,12 @@ foreach (var i in fileSctructure.Where(a => a.ParentID.Equals(parentID)))
                 <span style="width:15px; display:inline-block">&nbsp;</span>
             }
             <span>
-                    <a href="/Files/ShowUserFiles?fileSystemStructureID=@i.FileSystemStructureID">@i.Name</a>
+                <a href="javascript:void(0);" onclick="showFilesInFolder(@i.Id);">@i.Name</a>
             </span>
             @if (submenu > 0)
             {
                 <ul>
-                    @Treeview.GetTreeView(fileSctructure, i.FileSystemStructureID)
+                    @Treeview.GetTreeView(fileSctructure, i.Id)
                     @* Recursive  Call for Populate Sub items here*@
                 </ul>
             }
