@@ -3,25 +3,18 @@
     using CloudStorage.Entity.Interfaces;
     using CloudStorage.Domain.FileAggregate;
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     /// <summary>
-    /// Defines implementation of the IFileRepository contract.
+    /// Defines implementation of the IFileInfoRepository contract.
     /// </summary>
-    public class FileInfoRepository : IFileInfoRepository
+    public class FileInfoRepository : ContextRepository, IFileInfoRepository
     {
-        private readonly CloudStorageDbContext _db;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="FileInfoRepository"/> class.
         /// </summary>
         public FileInfoRepository()
-        {
-            this._db = new CloudStorageDbContext();
-        }
+        { }
 
         /// <summary>
         /// Adds new file.
@@ -29,10 +22,12 @@
         /// <param name="newFile">The file for adding.</param>
         public int Add(FileInfo newFile)
         {
-            this._db.Files.Add(newFile);
-            this._db.SaveChanges();
-            
-            return newFile.Id; 
+            using (var context = CreateContext())
+            {
+                context.Files.Add(newFile);
+                context.SaveChanges();
+                return newFile.Id; 
+            }
         }
         /// <summary>
         /// Updates specified file.
@@ -59,8 +54,29 @@
         /// <returns>Information about file.</returns>
         public FileInfo GetFileById(int id)
         {
-            var file = this._db.Files.Where(f => f.Id == id).SingleOrDefault();
-            return (FileInfo)file;
+            using (var context = CreateContext())
+            {
+                var file = context.Files.Where(f => f.Id == id).SingleOrDefault();
+                return (FileInfo)file;
+            }
+        }
+
+        /// <summary>
+        /// Get information about file by file id and user id.
+        /// </summary>
+        /// <param name="fileId">Identifier of file.</param>
+        /// <param name="userId">Identifier of user.</param>
+        /// <returns>Information about file.</returns>
+        public FileInfo GetFileById_UserId(int fileId, string userId)
+        {
+            using (var context = CreateContext())
+            {
+                var file = context.Files
+                                    .Where(f => f.Id == fileId && f.Users.Any(u => u.Id == userId))
+                                    .SingleOrDefault();
+
+                return (FileInfo)file;
+            }
         }
     }
 }

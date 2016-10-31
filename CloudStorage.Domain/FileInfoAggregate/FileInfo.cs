@@ -1,13 +1,18 @@
 ﻿namespace CloudStorage.Domain.FileAggregate
 {
     using System;
+    using System.IO;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     /// <summary>
     /// Represents a domain model of file.
     /// </summary>
     public class FileInfo
     {
+
+        private const string BASE_EXTENSION = "dat";
+
         private string _name;
 
         /// <summary>
@@ -65,6 +70,28 @@
         /// <value>Users.</value>
         public virtual ICollection<User> Users { get; set; }
 
+        /// <summary>
+        /// Gets a value indicating where path to file.
+        /// </summary>
+        [NotMapped]
+        public string PathToFile
+        {
+            get 
+            {
+                return Path.Combine(this.OwnerId, this.Id + "." + BASE_EXTENSION);
+            }
+        }
 
+        /// <summary>
+        /// Gets a value indicating where full name of file including extension.
+        /// </summary>
+        [NotMapped]
+        public string FullName
+        {
+            get
+            {
+                return String.Format("{0}.{1}", this.Name, this.Extension);
+            }
+        }
     }
 }

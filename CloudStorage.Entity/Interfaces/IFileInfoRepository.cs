@@ -14,5 +14,7 @@
         void Remove(int id);
 
         FileInfo GetFileById(int id);
+
+        FileInfo GetFileById_UserId(int fileId, string userId);
     }
 }

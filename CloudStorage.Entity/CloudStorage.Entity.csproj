@@ -55,6 +55,7 @@
     <Compile Include="CloudStorageDbContext.cs" />
     <Compile Include="Interfaces\IFileInfoRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\ContextRepository.cs" />
     <Compile Include="Repositories\FileInfoRepository.cs" />
   </ItemGroup>
   <ItemGroup>

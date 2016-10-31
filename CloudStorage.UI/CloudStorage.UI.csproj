@@ -171,7 +171,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_GlobalResources\FileValidation.Designer.cs">
+    <Compile Include="App_GlobalResources\FileValidation.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>FileValidation.resx</DependentUpon>
@@ -286,7 +286,7 @@
   <ItemGroup>
     <Content Include="App_GlobalResources\FileValidation.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>FileValidation.Designer.cs</LastGenOutput>
+      <LastGenOutput>FileValidation.designer.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <PropertyGroup>

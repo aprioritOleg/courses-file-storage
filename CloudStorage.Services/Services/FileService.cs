@@ -1,7 +1,9 @@
 ﻿namespace CloudStorage.Services.Services
 {
+    using CloudStorage.Domain;
     using CloudStorage.Domain.FileAggregate;
     using CloudStorage.Entity.Interfaces;
+    using CloudStorage.Entity.Repositories;
     using CloudStorage.Services.Interfaces;
     using System;
     using System.Collections.Generic;
@@ -13,6 +15,7 @@
     using System.IO;
     using System.Configuration;
     using Entity;
+    using System.Transactions;
 
     /// <summary>
     /// Defines an implementation of <see cref="IFileService"/> contract.
@@ -24,8 +27,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FileService"/> class.
         /// </summary>
-        /// <param name="fileInfoRepository">Instance of class which implements <see cref="IFileInfoRepository"/>.</param>        
-        /// <param name="fileRepository">Instance of class which implements <see cref="IFileRepository"/>.</param>        
+        /// <param name="fileInfoRepository">Instance of class which implements <see cref="IFileInfoRepository"/>.</param>
         public FileService(IFileInfoRepository fileInfoRepository)
         {
             this._fileInfoRepository = fileInfoRepository;
@@ -80,19 +82,15 @@
         /// <summary>
         /// Get information about file by id.
         /// </summary>
-        /// <param name="id">Identifier of file.</param>
+        /// <param name="fileId">Identifier of file.</param>
+        /// <param name="userId">Identifier of user.</param>
         /// <returns>Information about file.</returns>
-        public Domain.FileAggregate.FileInfo GetFileById(int id)
+        public Domain.FileAggregate.FileInfo GetFileById(int fileId, string userId)
         {
-            return this._fileInfoRepository.GetFileById(id);
+            return this._fileInfoRepository.GetFileById_UserId(fileId, userId);
         }
 
         public void Edit(Domain.FileAggregate.FileInfo file)
-        {
-            throw new NotImplementedException();
-        }
-
-        Domain.FileAggregate.FileInfo IFileService.GetFileById(int id)
         {
             throw new NotImplementedException();
         }

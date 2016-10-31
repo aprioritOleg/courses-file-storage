@@ -17,10 +17,11 @@
 
         void Edit(FileInfo file);
 
-        FileInfo GetFileById(int id);
+        FileInfo GetFileById(int fileId, string userId);
 
         void Delete(int id);
 
        // List<FileInfo> GetDataFromSpecificFolder(int currentSystemID);
+
     }
 }
