@@ -60,15 +60,7 @@
         /// <returns>Information about file.</returns>
         public FileInfo GetFileById(int fileId, string userId)
         {
-            FileInfo file = new FileInfo();
-       
-            using (var transaction = new TransactionScope())
-            {
-                file = this._fileInfoRepository.GetFileById_UserId(fileId, userId);
-                transaction.Complete();
-            }
-            
-            return file;
+            return this._fileInfoRepository.GetFileById_UserId(fileId, userId);
         }
     }
 }

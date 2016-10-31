@@ -1,6 +1,7 @@
 ﻿namespace CloudStorage.Domain.FileAggregate
 {
     using System;
+    using System.IO;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
 
@@ -72,7 +73,7 @@
         {
             get 
             {
-                return String.Format("{0}/{1}.{2}", this.OwnerId, this.Id, BASE_EXTENSION);
+                return Path.Combine(this.OwnerId, this.Id + "." + BASE_EXTENSION);
             }
         }
 
