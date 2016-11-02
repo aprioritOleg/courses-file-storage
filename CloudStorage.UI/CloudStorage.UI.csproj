@@ -206,6 +206,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="App_Code\Treeview.cshtml" />
+    <None Include="Properties\PublishProfiles\Profile_CloudStorage.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\displays-files\show-files-in-folder.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

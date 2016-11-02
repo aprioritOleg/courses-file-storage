@@ -1,5 +1,7 @@
 ﻿function showFilesInFolder(itemID)
 {
+    $("#currentFolderID").val(itemID);
+
     $.ajax({
         url: '/Files/ShowUserFiles',
         type: "POST",

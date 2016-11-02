@@ -1,21 +1,11 @@
 ﻿namespace CloudStorage.Services.Services
 {
-    using CloudStorage.Domain;
     using CloudStorage.Domain.FileAggregate;
     using CloudStorage.Entity.Interfaces;
-    using CloudStorage.Entity.Repositories;
     using CloudStorage.Services.Interfaces;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Web;
-    using System.Collections.Generic;
     using System.IO;
-    using System.Configuration;
-    using Entity;
-    using System.Transactions;
 
     /// <summary>
     /// Defines an implementation of <see cref="IFileService"/> contract.
@@ -37,39 +27,41 @@
         /// Creates a new file.
         /// </summary>
         /// <param name="file">File to create.</param>
-        public void Create(Domain.FileAggregate.FileInfo file, HttpPostedFileBase httpFileBase, string pathToUserDirectory)
+        public void Create(Domain.FileAggregate.FileInfo file, Stream fileStream, string pathToUserFolder)
         {
             //Adding information about file to database using FileInfoRepository
             //and return fileID of added file
             int fileID = _fileInfoRepository.Add(file);
-            
-            //Writing file on server
-            if (httpFileBase != null && httpFileBase.ContentLength > 0)
-            {
-                var fileName = fileID + ".dat";
-                var filePath = Path.Combine(HttpContext.Current.Server.MapPath(pathToUserDirectory), fileName);
-       
-                httpFileBase.SaveAs(filePath);
-            }
-        }
+            var fileName = fileID + ".dat";
 
+            //Folder for user's files will be created when user adds file
+            if (!Directory.Exists(pathToUserFolder))
+                Directory.CreateDirectory(pathToUserFolder);
+
+            //save file on server in user's folder
+            using (Stream destination = File.Create(pathToUserFolder + fileName))
+                Write(fileStream, destination);
+
+        }
+         public List<Domain.FileAggregate.FileInfo> GetFilesByUserID(string userId)
+        {
+            //This list will be returned to view Treeview.cshtml
+            return _fileInfoRepository.GetFilesByUserId(userId);
+        }
+        public List<string> GetFilesInFolderByUserID(int currentFolder, string userID)
+        {
+             return _fileInfoRepository.GetFilesInFolderByUserID(currentFolder, userID);
+        }
+        public void Write(Stream from, Stream to)
+        {
+            for (int a = from.ReadByte(); a != -1; a = from.ReadByte())
+                to.WriteByte((byte)a);
+        }
         public void AddNewFolder(Domain.FileAggregate.FileInfo folder)
         {
             _fileInfoRepository.Add(folder);
         }
 
-       /* public List<Domain.FileAggregate.FileInfo> GetDataFromSpecificFolder(int currentSystemID)
-        {
-            //Request from tables 
-            CloudStorageDbContext dbContext = new CloudStorageDbContext();
-
-            var allFiles = dbContext.FileSystemStructure.ToList();
-
-            using (var context = new CloudStorageDbContext())
-            {
-
-            }
-        }*/
         /// <summary>
         /// Deletes file by its identifier.
         /// </summary>

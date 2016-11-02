@@ -1,9 +1,8 @@
 ﻿namespace CloudStorage.Services.Interfaces
 {
     using CloudStorage.Domain.FileAggregate;
-    using System;
-    using System.Web;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// Defines a contract for FileService.
@@ -11,17 +10,18 @@
     public interface IFileService
     {
         // void Create(FileInfo file);
-        void Create(FileInfo file, HttpPostedFileBase httpFileBase, string pathToUserDirectory);
+        void Create(Domain.FileAggregate.FileInfo file, Stream fileStream, string pathToUserFolder);
 
-        void AddNewFolder(FileInfo folder);
+        void AddNewFolder(Domain.FileAggregate.FileInfo folder);
 
-        void Edit(FileInfo file);
+        void Edit(Domain.FileAggregate.FileInfo file);
 
-        FileInfo GetFileById(int fileId, string userId);
+        Domain.FileAggregate.FileInfo GetFileById(int fileId, string userId);
 
         void Delete(int id);
 
-       // List<FileInfo> GetDataFromSpecificFolder(int currentSystemID);
+        List<Domain.FileAggregate.FileInfo> GetFilesByUserID(string userId);
 
+        List<string> GetFilesInFolderByUserID(int currentFolder, string userId);
     }
 }

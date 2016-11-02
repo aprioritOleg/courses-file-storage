@@ -4,6 +4,7 @@
     using CloudStorage.Domain.FileAggregate;
     using System;
     using System.Linq;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Defines implementation of the IFileInfoRepository contract.
@@ -77,6 +78,30 @@
 
                 return (FileInfo)file;
             }
+        }
+
+        public List<FileInfo> GetFilesByUserId(string iserId)
+        {
+            //Select all files logged in user
+            using (var context = CreateContext())
+            {
+                return context.Files.Where(u => u.OwnerId == iserId).ToList();
+            }
+        }
+
+        public List<string> GetFilesInFolderByUserID(int currentFolder, string userID)
+        {
+            List<string> listFileNames = new List<string>();
+            using (var context = CreateContext())
+            {
+                //Select files which belong to current user in specific folder
+                var filesInSpecificFolder = context.Files.Where(u => u.ParentID == currentFolder).Where(user => user.OwnerId == userID);
+                foreach (var file in filesInSpecificFolder)
+                {
+                    listFileNames.Add(file.Name);
+                }
+            }
+            return listFileNames;
         }
     }
 }

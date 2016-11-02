@@ -1,11 +1,12 @@
 ﻿function uploadFiles(files) {
+    var folderID = $('#currentFolderID').val();
     if (files.length > 0) {
         if (window.FormData !== undefined) {
             var data = new FormData();
             for (var x = 0; x < files.length; x++) {
                 data.append("file" + x, files[x]);
             }
-            var myUrl = $("#MyURL").val();
+            var myUrl = '@Url.Action("Upload", "Files")?folderID=0';
             $.ajax({
                 xhr: function () {
                     var xhr = new window.XMLHttpRequest();
@@ -22,7 +23,7 @@
                     return xhr;
                 },
                 type: "POST",
-                url: myUrl,
+                url: '/Files/Upload?folderID=' + folderID, 
                 contentType: false,
                 processData: false,
                 data: data,
