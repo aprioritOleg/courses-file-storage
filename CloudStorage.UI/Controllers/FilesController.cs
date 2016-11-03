@@ -8,6 +8,7 @@
     using Microsoft.AspNet.Identity;
     using System.Configuration;
     using System.Web.UI.HtmlControls;
+    using System.IO;
 
     /// <summary>
     /// Defines FilesController
@@ -59,7 +60,7 @@
             }
             return PartialView("PartialViewBrowsingFiles");
         }
-
+        //Folder will be added in table FileInfo
         [HttpPost]
         public PartialViewResult AddFolder(string folderName, int currentFolderID)
         {
@@ -74,12 +75,7 @@
         //Returns the physical path to user folder on server
         private string getPathToUserFolder()
         {
-             return ConfigurationManager.AppSettings[PATH_USER_FOLDER].ToString() + User.Identity.GetUserId() + "/";
-        }
-        public FilePathResult Download(string fileName)
-        {
-            //string path = Server.MapPath(pathToUserDirectory);
-            return File(getPathToUserFolder() + fileName, "text/plain", fileName);
+            return Path.Combine(ConfigurationManager.AppSettings[PATH_USER_FOLDER].ToString(), User.Identity.GetUserId());
         }
 
         /// <summary>

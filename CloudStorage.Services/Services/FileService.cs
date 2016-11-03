@@ -39,7 +39,7 @@
                 Directory.CreateDirectory(pathToUserFolder);
 
             //save file on server in user's folder
-            using (Stream destination = File.Create(pathToUserFolder + fileName))
+            using (Stream destination = File.Create(Path.Combine(pathToUserFolder, fileName)))
                 Write(fileStream, destination);
 
         }

@@ -80,6 +80,7 @@
             }
         }
 
+        //Returns files in order to display file system in treeview
         public List<FileInfo> GetFilesByUserId(string iserId)
         {
             //Select all files logged in user
@@ -89,19 +90,14 @@
             }
         }
 
+        //Returns name of files in order to display them in view
         public List<string> GetFilesInFolderByUserID(int currentFolder, string userID)
         {
-            List<string> listFileNames = new List<string>();
             using (var context = CreateContext())
             {
-                //Select files which belong to current user in specific folder
-                var filesInSpecificFolder = context.Files.Where(u => u.ParentID == currentFolder).Where(user => user.OwnerId == userID);
-                foreach (var file in filesInSpecificFolder)
-                {
-                    listFileNames.Add(file.Name);
-                }
+                //Select name of files which belong to current user in specific folder
+                return context.Files.Where(u => u.ParentID == currentFolder).Where(user => user.OwnerId == userID).Select(field => field.Name).ToList();
             }
-            return listFileNames;
         }
     }
 }
