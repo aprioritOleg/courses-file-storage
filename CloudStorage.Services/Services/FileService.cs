@@ -1,13 +1,11 @@
 ﻿namespace CloudStorage.Services.Services
 {
-    using CloudStorage.Domain;
     using CloudStorage.Domain.FileAggregate;
     using CloudStorage.Entity.Interfaces;
-    using CloudStorage.Entity.Repositories;
     using CloudStorage.Services.Interfaces;
     using System;
     using System.Collections.Generic;
-    using System.Transactions;
+    using System.IO;
 
     /// <summary>
     /// Defines an implementation of <see cref="IFileService"/> contract.
@@ -29,18 +27,39 @@
         /// Creates a new file.
         /// </summary>
         /// <param name="file">File to create.</param>
-        public void Create(FileInfo file)
+        public void Create(Domain.FileAggregate.FileInfo file, Stream fileStream, string pathToUserFolder)
         {
-            throw new NotImplementedException();
+            //Adding information about file to database using FileInfoRepository
+            //and return fileID of added file
+            int fileID = _fileInfoRepository.Add(file);
+            var fileName = fileID + ".dat";
+
+            //Folder for user's files will be created when user adds file
+            if (!Directory.Exists(pathToUserFolder))
+                Directory.CreateDirectory(pathToUserFolder);
+
+            //save file on server in user's folder
+            using (Stream destination = File.Create(Path.Combine(pathToUserFolder, fileName)))
+                Write(fileStream, destination);
+
         }
-        
-        /// <summary>
-        /// Edits specified instance of file.
-        /// </summary>
-        /// <param name="fileToEdit">File to update.</param>
-        public void Edit(FileInfo fileToEdit)
+         public List<Domain.FileAggregate.FileInfo> GetFilesByUserID(string userId)
         {
-            throw new NotImplementedException();
+            //This list will be returned to view Treeview.cshtml
+            return _fileInfoRepository.GetFilesByUserId(userId);
+        }
+        public List<string> GetFilesInFolderByUserID(int currentFolder, string userID)
+        {
+             return _fileInfoRepository.GetFilesInFolderByUserID(currentFolder, userID);
+        }
+        public void Write(Stream from, Stream to)
+        {
+            for (int a = from.ReadByte(); a != -1; a = from.ReadByte())
+                to.WriteByte((byte)a);
+        }
+        public void AddNewFolder(Domain.FileAggregate.FileInfo folder)
+        {
+            _fileInfoRepository.Add(folder);
         }
 
         /// <summary>
@@ -58,9 +77,14 @@
         /// <param name="fileId">Identifier of file.</param>
         /// <param name="userId">Identifier of user.</param>
         /// <returns>Information about file.</returns>
-        public FileInfo GetFileById(int fileId, string userId)
+        public Domain.FileAggregate.FileInfo GetFileById(int fileId, string userId)
         {
             return this._fileInfoRepository.GetFileById_UserId(fileId, userId);
+        }
+
+        public void Edit(Domain.FileAggregate.FileInfo file)
+        {
+            throw new NotImplementedException();
         }
     }
 }

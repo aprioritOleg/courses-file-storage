@@ -13,6 +13,7 @@
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.Owin.Security;
+    using System.Configuration;
 
     [Authorize]
     public class AccountController : Controller
@@ -85,14 +86,13 @@
                 if (result.Succeeded)
                 {
                     await SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Files");
                 }
                 else
                 {
                     AddErrors(result);
                 }
             }
-
             // If we got this far, something failed, redisplay form
             return View(model);
         }
@@ -292,7 +292,7 @@
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Files");
         }
 
         //
@@ -374,7 +374,7 @@
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Files");
             }
         }
 

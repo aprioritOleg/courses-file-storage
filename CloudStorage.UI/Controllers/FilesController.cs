@@ -1,13 +1,14 @@
 ﻿namespace CloudStorage.UI.Controllers
 {
-    using CloudStorage.Services.Interfaces;
-    using CloudStorage.Domain.FileAggregate;
+    using Services.Interfaces;
     using System;
     using System.Collections.Generic;
-    using System.Web;
+    using System.Linq;
     using System.Web.Mvc;
     using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.Identity.EntityFramework;
+    using System.Configuration;
+    using System.Web.UI.HtmlControls;
+    using System.IO;
 
     /// <summary>
     /// Defines FilesController
@@ -18,19 +19,63 @@
         /// Holds FileService instance
         /// </summary>
         private readonly IFileService _fileService;
-
+        private const string PATH_USER_FOLDER = "PathUserData";
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="FilesController"/> class
         /// </summary>
         /// <param name="fileService">The tournament service</param>
         public FilesController(IFileService fileService)
         {
-            this._fileService = fileService;
+            _fileService = fileService;
         }
-
+       
         public ActionResult Index()
         {
-            return View();
+            ViewBag.DataIconsFiles = _fileService.GetFilesInFolderByUserID(0, User.Identity.GetUserId());
+            return View("Index", _fileService.GetFilesByUserID(User.Identity.GetUserId()));
+        }
+ 
+        //Returns user's files in specific folder 
+        public ActionResult ShowUserFiles(int fileSystemStructureID)
+        {
+            ViewBag.DataIconsFiles = _fileService.GetFilesInFolderByUserID(fileSystemStructureID, User.Identity.GetUserId());
+            return PartialView("PartialViewBrowsingFiles");
+        }
+
+        [HttpPost]
+        public ActionResult Upload(int folderID)
+        {
+            //transfer uploaded files to Service
+            foreach (string fileName in Request.Files)
+            {
+                _fileService.Create(new Domain.FileAggregate.FileInfo() {
+                                                                        Name = Request.Files[fileName].FileName,
+                                                                        CreationDate = DateTime.Now,
+                                                                        Extension = System.IO.Path.GetExtension(Request.Files[fileName].FileName),
+                                                                        OwnerId = User.Identity.GetUserId(),
+                                                                        ParentID = folderID
+                },
+                                                                        Request.Files[fileName].InputStream, Server.MapPath(getPathToUserFolder()));
+            }
+            return PartialView("PartialViewBrowsingFiles");
+        }
+        //Folder will be added in table FileInfo
+        [HttpPost]
+        public PartialViewResult AddFolder(string folderName, int currentFolderID)
+        {
+          _fileService.AddNewFolder(new Domain.FileAggregate.FileInfo() {
+                                                                            Name = folderName,
+                                                                            CreationDate = DateTime.Now,
+                                                                            OwnerId = User.Identity.GetUserId(),
+                                                                            ParentID = currentFolderID
+                                                                         });
+            return PartialView("PartialViewTreeview", _fileService.GetFilesByUserID(User.Identity.GetUserId()));
+        }
+        //Returns the physical path to user folder on server
+        private string getPathToUserFolder()
+        {
+            return Path.Combine(ConfigurationManager.AppSettings[PATH_USER_FOLDER].ToString(), User.Identity.GetUserId());
         }
 
         /// <summary>

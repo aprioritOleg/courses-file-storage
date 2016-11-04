@@ -60,6 +60,11 @@
         public string OwnerId { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating location of file
+        /// </summary>
+        public int ParentID { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating where users.
         /// </summary>
         /// <value>Users.</value>

@@ -4,6 +4,7 @@
     using CloudStorage.Domain.FileAggregate;
     using System;
     using System.Linq;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Defines implementation of the IFileInfoRepository contract.
@@ -20,15 +21,15 @@
         /// Adds new file.
         /// </summary>
         /// <param name="newFile">The file for adding.</param>
-        public void Add(FileInfo newFile)
+        public int Add(FileInfo newFile)
         {
             using (var context = CreateContext())
             {
                 context.Files.Add(newFile);
                 context.SaveChanges();
+                return newFile.Id; 
             }
         }
-
         /// <summary>
         /// Updates specified file.
         /// </summary>
@@ -76,6 +77,26 @@
                                     .SingleOrDefault();
 
                 return (FileInfo)file;
+            }
+        }
+
+        //Returns files in order to display file system in treeview
+        public List<FileInfo> GetFilesByUserId(string iserId)
+        {
+            //Select all files logged in user
+            using (var context = CreateContext())
+            {
+                return context.Files.Where(u => u.OwnerId == iserId).ToList();
+            }
+        }
+
+        //Returns name of files in order to display them in view
+        public List<string> GetFilesInFolderByUserID(int currentFolder, string userID)
+        {
+            using (var context = CreateContext())
+            {
+                //Select name of files which belong to current user in specific folder
+                return context.Files.Where(u => u.ParentID == currentFolder).Where(user => user.OwnerId == userID).Select(field => field.Name).ToList();
             }
         }
     }
