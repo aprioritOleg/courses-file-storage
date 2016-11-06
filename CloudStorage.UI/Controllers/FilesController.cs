@@ -7,9 +7,8 @@
     using System.Web.Mvc;
     using Microsoft.AspNet.Identity;
     using System.Configuration;
-    using System.Web.UI.HtmlControls;
     using System.IO;
-
+    using Models;
     /// <summary>
     /// Defines FilesController
     /// </summary>
@@ -32,45 +31,79 @@
        
         public ActionResult Index()
         {
-            ViewBag.DataIconsFiles = _fileService.GetFilesInFolderByUserID(0, User.Identity.GetUserId());
-            return View("Index", _fileService.GetFilesByUserID(User.Identity.GetUserId()));
+            //List with subfolders which have to opened after adding files or folders
+            ViewBag.ListSubfoldersID = new List<int>(); //treeview will be closed (folded)
+
+            //return two model for treeview and for area, where will be displayed icons and filenames
+             return View(new TreeViewAndBrowsingFilesModel() { TreeviewItems = _fileService.GetFilesByUserID(User.Identity.GetUserId()), IconItems = _fileService.GetFilesInFolderByUserID(0, User.Identity.GetUserId()) } );
         }
  
         //Returns user's files in specific folder 
-        public ActionResult ShowUserFiles(int fileSystemStructureID)
+        public PartialViewResult ShowUserFiles(int fileSystemStructureID)
         {
-            ViewBag.DataIconsFiles = _fileService.GetFilesInFolderByUserID(fileSystemStructureID, User.Identity.GetUserId());
-            return PartialView("PartialViewBrowsingFiles");
+            return PartialView("_BrowsingFiles", _fileService.GetFilesInFolderByUserID(fileSystemStructureID, User.Identity.GetUserId()));
         }
 
         [HttpPost]
-        public ActionResult Upload(int folderID)
+        public JsonResult Upload(int folderID)
         {
+            int newFolderID = 0;
             //transfer uploaded files to Service
             foreach (string fileName in Request.Files)
             {
-                _fileService.Create(new Domain.FileAggregate.FileInfo() {
+                newFolderID = _fileService.Create(new Domain.FileAggregate.FileInfo() {
                                                                         Name = Request.Files[fileName].FileName,
                                                                         CreationDate = DateTime.Now,
                                                                         Extension = System.IO.Path.GetExtension(Request.Files[fileName].FileName),
                                                                         OwnerId = User.Identity.GetUserId(),
                                                                         ParentID = folderID
-                },
+                                                                         },
                                                                         Request.Files[fileName].InputStream, Server.MapPath(getPathToUserFolder()));
             }
-            return PartialView("PartialViewBrowsingFiles");
+            //List with subfolders which have to opened after adding files or folders
+            ViewBag.ListSubfoldersID = _fileService.GetSubfoldersByFolderID(newFolderID);
+            return GetModels(folderID);
         }
         //Folder will be added in table FileInfo
         [HttpPost]
-        public PartialViewResult AddFolder(string folderName, int currentFolderID)
+        public JsonResult AddFolder(string folderName, int currentFolderID)
         {
-          _fileService.AddNewFolder(new Domain.FileAggregate.FileInfo() {
+          int newFolderId = _fileService.AddNewFolder(new Domain.FileAggregate.FileInfo() {
                                                                             Name = folderName,
                                                                             CreationDate = DateTime.Now,
                                                                             OwnerId = User.Identity.GetUserId(),
                                                                             ParentID = currentFolderID
-                                                                         });
-            return PartialView("PartialViewTreeview", _fileService.GetFilesByUserID(User.Identity.GetUserId()));
+                                                                       });
+
+            ViewBag.ListSubfoldersID = _fileService.GetSubfoldersByFolderID(newFolderId);
+            return GetModels(currentFolderID);
+        }
+        // Returns updated models for Treeview and for display area
+        private JsonResult GetModels(int currentFolderID)
+        {
+            //create two model to return to partial views Treeview and BrowsingFiles
+            var model = new TreeViewAndBrowsingFilesModel();
+            model.TreeviewItems = _fileService.GetFilesByUserID(User.Identity.GetUserId());
+            model.IconItems = _fileService.GetFilesInFolderByUserID(currentFolderID, User.Identity.GetUserId());
+
+            var dataTreeview = RenderRazorViewToString(this.ControllerContext, "_Treeview", model.TreeviewItems);
+            var dataArea = RenderRazorViewToString(this.ControllerContext, "_BrowsingFiles", model.IconItems);
+            return Json(new { dataTreeview, dataArea });
+        }
+        // helper method to package up the partial view
+        public static string RenderRazorViewToString(ControllerContext controllerContext,
+             string viewName, object model)
+        {
+            controllerContext.Controller.ViewData.Model = model;
+
+            using (var stringWriter = new StringWriter())
+            {
+                var viewResult = ViewEngines.Engines.FindPartialView(controllerContext, viewName);
+                var viewContext = new ViewContext(controllerContext, viewResult.View, controllerContext.Controller.ViewData, controllerContext.Controller.TempData, stringWriter);
+                viewResult.View.Render(viewContext, stringWriter);
+                viewResult.ViewEngine.ReleaseView(controllerContext, viewResult.View);
+                return stringWriter.GetStringBuilder().ToString();
+            }
         }
         //Returns the physical path to user folder on server
         private string getPathToUserFolder()

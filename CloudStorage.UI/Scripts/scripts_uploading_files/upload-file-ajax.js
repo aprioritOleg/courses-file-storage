@@ -26,9 +26,16 @@
                 url: '/Files/Upload?folderID=' + folderID, 
                 contentType: false,
                 processData: false,
+                dataType: 'json',
                 data: data,
-                success: function (data) {
-                    $('div#block_view_files_folders').html(data);
+                success: function (result) {
+                    if (result != null) {
+                        $('div#partial_view_treeview').html(result.dataTreeview);
+                        $('div#block_view_files_folders').html(result.dataArea);
+                    } else {
+                        alert('Error getting data.');
+                    }
+                    showTreeview();
                 },
                 error: function (xhr, status, p3) {
                     alert(xhr.responseText);

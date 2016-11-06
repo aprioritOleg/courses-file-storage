@@ -9,10 +9,9 @@
     /// </summary>
     public interface IFileService
     {
-        // void Create(FileInfo file);
-        void Create(Domain.FileAggregate.FileInfo file, Stream fileStream, string pathToUserFolder);
+        int Create(Domain.FileAggregate.FileInfo file, Stream fileStream, string pathToUserFolder);
 
-        void AddNewFolder(Domain.FileAggregate.FileInfo folder);
+        int AddNewFolder(Domain.FileAggregate.FileInfo folder);
 
         void Edit(Domain.FileAggregate.FileInfo file);
 
@@ -23,5 +22,7 @@
         List<Domain.FileAggregate.FileInfo> GetFilesByUserID(string userId);
 
         List<string> GetFilesInFolderByUserID(int currentFolder, string userId);
+
+        List<int> GetSubfoldersByFolderID(int folderID);
     }
 }

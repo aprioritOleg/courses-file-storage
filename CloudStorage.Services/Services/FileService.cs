@@ -27,7 +27,7 @@
         /// Creates a new file.
         /// </summary>
         /// <param name="file">File to create.</param>
-        public void Create(Domain.FileAggregate.FileInfo file, Stream fileStream, string pathToUserFolder)
+        public int Create(Domain.FileAggregate.FileInfo file, Stream fileStream, string pathToUserFolder)
         {
             //Adding information about file to database using FileInfoRepository
             //and return fileID of added file
@@ -42,6 +42,7 @@
             using (Stream destination = File.Create(Path.Combine(pathToUserFolder, fileName)))
                 Write(fileStream, destination);
 
+            return fileID;
         }
          public List<Domain.FileAggregate.FileInfo> GetFilesByUserID(string userId)
         {
@@ -57,9 +58,9 @@
             for (int a = from.ReadByte(); a != -1; a = from.ReadByte())
                 to.WriteByte((byte)a);
         }
-        public void AddNewFolder(Domain.FileAggregate.FileInfo folder)
+        public int AddNewFolder(Domain.FileAggregate.FileInfo folder)
         {
-            _fileInfoRepository.Add(folder);
+           return _fileInfoRepository.Add(folder);
         }
 
         /// <summary>
@@ -85,6 +86,12 @@
         public void Edit(Domain.FileAggregate.FileInfo file)
         {
             throw new NotImplementedException();
+        }
+        // Returns list with ID subfolders, which have to be opened in treeview
+        // after updating treeview with new files and folders
+        public List<int> GetSubfoldersByFolderID(int folderID)
+        {
+            return _fileInfoRepository.GetSubFolders(folderID);
         }
     }
 }
