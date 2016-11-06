@@ -1,0 +1,9 @@
+﻿@model CloudStorage.UI.Models.RedactingViewModel
+
+@{
+    ViewBag.Title = "Redact";
+    Layout = "~/Views/Shared/_RedactLayout.cshtml";
+}
+
+@Html.Raw(@Model.HtmlText);
+

@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+@model CloudStorage.UI.Models.RedactingViewModel
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@Model.Name</title>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="../ckeditor/ckeditor.js"></script>
+</head>
+<body>
+    <input hidden type="hidden" value="@Model.Extension" id="extension" />
+    <input hidden type="hidden" value="@Model.FilePath" id="filePath" />
+    <input hidden type="hidden" value="@Model.Name" id="name" />
+
+
+    <form method="post">
+        <textarea name="editor1" id="editor1" rows="10" cols="80">
+            @RenderBody()
+        </textarea>
+        <script>
+    var ckEditor = CKEDITOR.replace('editor1');
+    ckEditor.on("instanceReady", function () {
+        ckEditor.addCommand("save", {
+            modes: { wysiwyg: 1, source: 1 },
+            exec: function () {
+                var htmlText = ckEditor.getData();
+                var extension = $("#extension").val();
+                var path = $("#filePath").val();
+                var name = $("#name").val();
+                $.ajax({
+                    url: "/Files/Redact",
+                    type: "POST",
+                    dataType: "json",
+                    data: { HtmlText: htmlText, Extension: extension,FilePath: path, Name: name}
+                });
+            }
+        })
+    }
+
+
+        );
+    CKEDITOR.on('instanceReady',
+function (evt) {
+    var editor = evt.editor;
+    editor.execCommand('maximize');
+});
+        </script>
+        <input type="button" onclick="MyFunction()" value="Send" />
+    </form>
+
+
+</body>
+</html>
