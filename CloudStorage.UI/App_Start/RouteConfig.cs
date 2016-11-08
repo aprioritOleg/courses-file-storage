@@ -14,6 +14,12 @@ namespace CloudStorage.UI
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "Google API Sign-in",
+                url: "signin-google",
+                defaults: new { controller = "Account", action = "ExternalLoginCallbackRedirect" }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Files", action = "Index", id = UrlParameter.Optional }

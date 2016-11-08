@@ -13,6 +13,8 @@
     /// <summary>
     /// Defines FilesController
     /// </summary>
+    [Authorize]
+    [RequireHttps]
     public class FilesController : Controller
     {
         /// <summary>
