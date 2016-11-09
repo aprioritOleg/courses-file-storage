@@ -7,9 +7,8 @@
     using System.Web.Mvc;
     using Microsoft.AspNet.Identity;
     using System.Configuration;
-    using System.Web.UI.HtmlControls;
     using System.IO;
-
+    using Models;
     /// <summary>
     /// Defines FilesController
     /// </summary>
@@ -32,45 +31,59 @@
        
         public ActionResult Index()
         {
-            ViewBag.DataIconsFiles = _fileService.GetFilesInFolderByUserID(0, User.Identity.GetUserId());
-            return View("Index", _fileService.GetFilesByUserID(User.Identity.GetUserId()));
+            //List with subfolders which have to opened after adding files or folders
+            ViewBag.ListSubfoldersID = new List<int>(); //treeview will be closed (folded)
+
+            //return two model for treeview and for area, where will be displayed icons and filenames
+             return View(new TreeViewAndBrowsingFilesModel() { TreeviewItems = _fileService.GetFilesByUserID(User.Identity.GetUserId()), IconItems = _fileService.GetFilesInFolderByUserID(0, User.Identity.GetUserId()) } );
         }
  
         //Returns user's files in specific folder 
-        public ActionResult ShowUserFiles(int fileSystemStructureID)
+        public PartialViewResult ShowUserFiles(int fileSystemStructureID)
         {
-            ViewBag.DataIconsFiles = _fileService.GetFilesInFolderByUserID(fileSystemStructureID, User.Identity.GetUserId());
-            return PartialView("PartialViewBrowsingFiles");
+            return PartialView("_BrowsingFiles", _fileService.GetFilesInFolderByUserID(fileSystemStructureID, User.Identity.GetUserId()));
         }
 
         [HttpPost]
-        public ActionResult Upload(int folderID)
+        public PartialViewResult UploadFile(int currentFolderID)
         {
             //transfer uploaded files to Service
             foreach (string fileName in Request.Files)
             {
-                _fileService.Create(new Domain.FileAggregate.FileInfo() {
-                                                                        Name = Request.Files[fileName].FileName,
-                                                                        CreationDate = DateTime.Now,
-                                                                        Extension = System.IO.Path.GetExtension(Request.Files[fileName].FileName),
-                                                                        OwnerId = User.Identity.GetUserId(),
-                                                                        ParentID = folderID
+                _fileService.Create(new Domain.FileAggregate.FileInfo()
+                {
+                    Name = Request.Files[fileName].FileName,
+                    CreationDate = DateTime.Now,
+                    Extension = Path.GetExtension(Request.Files[fileName].FileName),
+                    OwnerId = User.Identity.GetUserId(),
+                    ParentID = currentFolderID
                 },
-                                                                        Request.Files[fileName].InputStream, Server.MapPath(getPathToUserFolder()));
+                Request.Files[fileName].InputStream, Server.MapPath(getPathToUserFolder()));
             }
-            return PartialView("PartialViewBrowsingFiles");
+           
+            return PartialView("_BrowsingFiles", _fileService.GetFilesInFolderByUserID(currentFolderID, User.Identity.GetUserId()));
         }
         //Folder will be added in table FileInfo
         [HttpPost]
         public PartialViewResult AddFolder(string folderName, int currentFolderID)
         {
-          _fileService.AddNewFolder(new Domain.FileAggregate.FileInfo() {
-                                                                            Name = folderName,
-                                                                            CreationDate = DateTime.Now,
-                                                                            OwnerId = User.Identity.GetUserId(),
-                                                                            ParentID = currentFolderID
-                                                                         });
-            return PartialView("PartialViewTreeview", _fileService.GetFilesByUserID(User.Identity.GetUserId()));
+             _fileService.AddNewFolder(new Domain.FileAggregate.FileInfo()
+                                            {
+                                                Name = folderName,
+                                                CreationDate = DateTime.Now,
+                                                OwnerId = User.Identity.GetUserId(),
+                                                ParentID = currentFolderID
+                                            });
+            //returns partial view with model
+            return PartialView("_BrowsingFiles", _fileService.GetFilesInFolderByUserID(currentFolderID, User.Identity.GetUserId()));
+        }
+        [HttpGet]
+        public PartialViewResult UpdateTreeview(int currentFolderID)
+        {
+            //List with subfolders which have to opened after adding files or folders
+            ViewBag.ListSubfoldersID = _fileService.GetSubfoldersByFolderID(currentFolderID);
+
+            return PartialView("_Treeview", _fileService.GetFilesByUserID(User.Identity.GetUserId()));
         }
         //Returns the physical path to user folder on server
         private string getPathToUserFolder()

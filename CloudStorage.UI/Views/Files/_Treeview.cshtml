@@ -1,0 +1,11 @@
+﻿@model List<CloudStorage.Domain.FileAggregate.FileInfo>
+
+<!--Drawing tree view-->
+<div class="divTreeView" id="partial_view_treeview">
+    @if (Model != null && Model.Count() > 0)
+    {
+        <ul id="browser" class="filetree">
+            @Treeview.GetTreeView(Model, Model.FirstOrDefault().ParentID, ViewBag.ListSubfoldersID)
+        </ul>
+    }
+</div>

@@ -1,4 +1,5 @@
 ﻿<!--Displays in area icons and names of files-->
+@model List<string>
 
 <div id="block_view_files_folders">
     <div onmousedown="HideMenu('contextMenu');"
@@ -7,9 +8,9 @@
          class="bottom-three"
          id="dropArea">
         <div>
-            @if (ViewBag.DataIconsFiles != null)
+            @if (Model != null)
             {
-                foreach (var file in ViewBag.DataIconsFiles)
+                foreach (var file in Model)
                 {
                     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 property-align-center">
                         <img src="~/Content/Icons/txt.png" width="50" height="50" />

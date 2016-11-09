@@ -2,7 +2,6 @@
     //get current folder id from hidden field
     var folderID = $('#currentFolderID').val();
     $("#dialog").dialog("open");
-
     $('#dialog').unbind('submit').bind('submit', function () {
         var name = $("#name").val();
         requestAddFolder(name, folderID);
@@ -14,12 +13,12 @@
             type: "POST",
             data: { folderName: $name, currentFolderID: $folderID},
             dataType: "html",
-     
             success: function (data) {
-                $('div#partial_view_treeview').html(data);
+                $('div#block_view_files_folders').html(data);
+                updateTreeview($folderID);
             },
             error: function (xhr) {
-                alert(xhr);
+                 alert('Error getting data.');
             }
         });
     }

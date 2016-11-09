@@ -41,7 +41,7 @@
             //save file on server in user's folder
             using (Stream destination = File.Create(Path.Combine(pathToUserFolder, fileName)))
                 Write(fileStream, destination);
-
+            
         }
          public List<Domain.FileAggregate.FileInfo> GetFilesByUserID(string userId)
         {
@@ -59,7 +59,7 @@
         }
         public void AddNewFolder(Domain.FileAggregate.FileInfo folder)
         {
-            _fileInfoRepository.Add(folder);
+             _fileInfoRepository.Add(folder);
         }
 
         /// <summary>
@@ -85,6 +85,12 @@
         public void Edit(Domain.FileAggregate.FileInfo file)
         {
             throw new NotImplementedException();
+        }
+        // Returns list with ID subfolders, which have to be opened in treeview
+        // after updating treeview with new files and folders
+        public List<int> GetSubfoldersByFolderID(int folderID)
+        {
+            return _fileInfoRepository.GetSubFolders(folderID);
         }
     }
 }
