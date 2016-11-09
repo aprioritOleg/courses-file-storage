@@ -27,7 +27,7 @@
         /// Creates a new file.
         /// </summary>
         /// <param name="file">File to create.</param>
-        public int Create(Domain.FileAggregate.FileInfo file, Stream fileStream, string pathToUserFolder)
+        public void Create(Domain.FileAggregate.FileInfo file, Stream fileStream, string pathToUserFolder)
         {
             //Adding information about file to database using FileInfoRepository
             //and return fileID of added file
@@ -41,8 +41,7 @@
             //save file on server in user's folder
             using (Stream destination = File.Create(Path.Combine(pathToUserFolder, fileName)))
                 Write(fileStream, destination);
-
-            return fileID;
+            
         }
          public List<Domain.FileAggregate.FileInfo> GetFilesByUserID(string userId)
         {
@@ -58,9 +57,9 @@
             for (int a = from.ReadByte(); a != -1; a = from.ReadByte())
                 to.WriteByte((byte)a);
         }
-        public int AddNewFolder(Domain.FileAggregate.FileInfo folder)
+        public void AddNewFolder(Domain.FileAggregate.FileInfo folder)
         {
-           return _fileInfoRepository.Add(folder);
+             _fileInfoRepository.Add(folder);
         }
 
         /// <summary>

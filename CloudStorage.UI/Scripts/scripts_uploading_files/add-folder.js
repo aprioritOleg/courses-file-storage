@@ -12,15 +12,10 @@
             url: '/Files/AddFolder',
             type: "POST",
             data: { folderName: $name, currentFolderID: $folderID},
-            dataType: 'json',
-            success: function (result) {
-                if (result != null) {
-                    $('div#partial_view_treeview').html(result.dataTreeview);
-                    $('div#block_view_files_folders').html(result.dataArea);
-                } else {
-                    alert('Error getting data.');
-                }
-                showTreeview();
+            dataType: "html",
+            success: function (data) {
+                $('div#block_view_files_folders').html(data);
+                updateTreeview($folderID);
             },
             error: function (xhr) {
                  alert('Error getting data.');

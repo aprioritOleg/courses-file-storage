@@ -23,14 +23,12 @@
                     return xhr;
                 },
                 type: "POST",
-                url: '/Files/UploadFile?currentFolderID=' + folderID,
+                url: '/Files/UploadElement?currentFolderID=' + folderID + "&folderName=" + 
                 contentType: false,
                 processData: false,
-                dataType: 'html',
                 data: data,
                 success: function (data) {
                     $('div#block_view_files_folders').html(data);
-                    updateTreeview(folderID);
                 },
                 error: function (xhr, status, p3) {
                     alert(xhr.responseText);

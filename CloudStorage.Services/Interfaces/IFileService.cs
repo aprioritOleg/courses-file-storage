@@ -9,9 +9,9 @@
     /// </summary>
     public interface IFileService
     {
-        int Create(Domain.FileAggregate.FileInfo file, Stream fileStream, string pathToUserFolder);
+        void Create(Domain.FileAggregate.FileInfo file, Stream fileStream, string pathToUserFolder);
 
-        int AddNewFolder(Domain.FileAggregate.FileInfo folder);
+        void AddNewFolder(Domain.FileAggregate.FileInfo folder);
 
         void Edit(Domain.FileAggregate.FileInfo file);
 

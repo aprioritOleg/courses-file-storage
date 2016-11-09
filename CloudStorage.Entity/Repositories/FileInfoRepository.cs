@@ -102,13 +102,15 @@
 
         // Recursive search subfolders using current folderID
         // search stops when root directory (0) have been reached
-        public IEnumerable<int> FindSubFoldersID(CloudStorageDbContext context, int id)
+        public IEnumerable<int> FindSubFoldersID(CloudStorageDbContext context, int id, bool isIdAdded)
         {
+            if (isIdAdded)
+                yield return id;
             int parentID = context.Files.Where(u => u.Id == id).Select(field => field.ParentID).SingleOrDefault();
             if (parentID != 0)
             {
                 yield return parentID;
-                foreach (int n in FindSubFoldersID(context, parentID))
+                foreach (int n in FindSubFoldersID(context, parentID, false))
                 {
                    yield return n;
                 }
@@ -120,7 +122,7 @@
         {
             using (var context = CreateContext())
             {
-                return FindSubFoldersID(context, folderID).ToList();
+                return FindSubFoldersID(context, folderID, true).ToList();
             }
         }
     }

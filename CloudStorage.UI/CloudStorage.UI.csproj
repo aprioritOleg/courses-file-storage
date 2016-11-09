@@ -243,6 +243,7 @@
     <Content Include="Scripts\scripts_uploading_files\dialog.js" />
     <Content Include="Scripts\scripts_uploading_files\drag-and-drop.js" />
     <Content Include="Scripts\scripts_uploading_files\right-click-menu.js" />
+    <Content Include="Scripts\scripts_uploading_files\update-treeview.js" />
     <Content Include="Scripts\scripts_uploading_files\upload-file-ajax.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
