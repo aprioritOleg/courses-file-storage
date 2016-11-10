@@ -57,8 +57,8 @@
         {
             using (var context = CreateContext())
             {
-                var file = context.Files.Where(f => f.Id == id).SingleOrDefault();
-                return (FileInfo)file;
+                FileInfo file = context.Files.Where(f => f.Id == id).SingleOrDefault();
+                return file;
             }
         }
 
@@ -72,11 +72,11 @@
         {
             using (var context = CreateContext())
             {
-                var file = context.Files
-                                    .Where(f => f.Id == fileId && f.Users.Any(u => u.Id == userId))
+                FileInfo file = context.Files
+                                    .Where(f => f.Id == fileId).Where(user => user.OwnerId == userId)
                                     .SingleOrDefault();
 
-                return (FileInfo)file;
+                return file;
             }
         }
 
@@ -91,12 +91,12 @@
         }
 
         //Returns name of files in order to display them in view
-        public List<string> GetFilesInFolderByUserID(int currentFolder, string userID)
+        public List<FileInfo> GetFilesInFolderByUserID(int currentFolder, string userID)
         {
             using (var context = CreateContext())
             {
                 //Select name of files which belong to current user in specific folder
-                return context.Files.Where(u => u.ParentID == currentFolder).Where(user => user.OwnerId == userID).Select(field => field.Name).ToList();
+                return context.Files.Where(u => u.ParentID == currentFolder).Where(user => user.OwnerId == userID).ToList();
             }
         }
 

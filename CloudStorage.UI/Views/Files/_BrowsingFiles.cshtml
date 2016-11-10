@@ -1,5 +1,5 @@
 ﻿<!--Displays in area icons and names of files-->
-@model List<string>
+@model List<CloudStorage.Domain.FileAggregate.FileInfo>
 
 <div id="block_view_files_folders">
     <div onmousedown="HideMenu('contextMenu');"
@@ -7,15 +7,24 @@
          oncontextmenu="ShowMenu('contextMenu',event);"
          class="bottom-three"
          id="dropArea">
+        @using Microsoft.AspNet.Identity;
         <div>
             @if (Model != null)
             {
                 foreach (var file in Model)
                 {
                     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 property-align-center">
-                        <img src="~/Content/Icons/txt.png" width="50" height="50" />
+                        
+                        @if(file.Extension == null)
+                        {
+                            <img src="~/Content/Icons/icon-folder.png" width="60" height="60" />
+                        }
+                        else
+                        {
+                            <img src='@Url.Action("GetImage", "Files", new {fileID = file.Id})' width="60" height="60" />
+                        }
                         <br />
-                        @file
+                        @file.Name
                     </div>
                 }
             }

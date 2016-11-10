@@ -35,7 +35,7 @@
             ViewBag.ListSubfoldersID = new List<int>(); //treeview will be closed (folded)
 
             //return two model for treeview and for area, where will be displayed icons and filenames
-             return View(new TreeViewAndBrowsingFilesModel() { TreeviewItems = _fileService.GetFilesByUserID(User.Identity.GetUserId()), IconItems = _fileService.GetFilesInFolderByUserID(0, User.Identity.GetUserId()) } );
+             return View(_fileService.GetFilesByUserID(User.Identity.GetUserId()));
         }
  
         //Returns user's files in specific folder 
@@ -60,7 +60,7 @@
                 },
                 Request.Files[fileName].InputStream, Server.MapPath(getPathToUserFolder()));
             }
-           
+
             return PartialView("_BrowsingFiles", _fileService.GetFilesInFolderByUserID(currentFolderID, User.Identity.GetUserId()));
         }
         //Folder will be added in table FileInfo
@@ -75,7 +75,7 @@
                                                 ParentID = currentFolderID
                                             });
             //returns partial view with model
-            return PartialView("_BrowsingFiles", _fileService.GetFilesInFolderByUserID(currentFolderID, User.Identity.GetUserId()));
+             return PartialView("_BrowsingFiles", _fileService.GetFilesInFolderByUserID(currentFolderID, User.Identity.GetUserId()));
         }
         [HttpGet]
         public PartialViewResult UpdateTreeview(int currentFolderID)
@@ -91,6 +91,13 @@
             return Path.Combine(ConfigurationManager.AppSettings[PATH_USER_FOLDER].ToString(), User.Identity.GetUserId());
         }
 
+        //Returns a thumbnail into view
+        //The first parameter is a byte array that represents the file content
+        //second parameter indicates the MIME content type.
+        public ActionResult GetImage(int fileID)
+        {
+            return File(_fileService.GetImageBytes(fileID, Server.MapPath(getPathToUserFolder())), "image/png");
+        }
         /// <summary>
         /// Download file.
         /// </summary>

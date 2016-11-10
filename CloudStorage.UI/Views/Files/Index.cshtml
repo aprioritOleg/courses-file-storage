@@ -1,4 +1,4 @@
-﻿@model CloudStorage.UI.Models.TreeViewAndBrowsingFilesModel
+﻿@model List<CloudStorage.Domain.FileAggregate.FileInfo>
 @{
     ViewBag.Title = "Index";
 }
@@ -63,7 +63,7 @@
 </div>
 
 <!--Displays file structure with Treeview-->
-@Html.Partial("_Treeview", Model.TreeviewItems);
+@Html.Partial("_Treeview", Model);
 
 <!--Displays in area icons and names of files-->
-@Html.Partial("_BrowsingFIles", Model.IconItems);
+@Html.Partial("_BrowsingFiles", Model);

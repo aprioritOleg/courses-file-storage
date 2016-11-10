@@ -48,7 +48,7 @@
             //This list will be returned to view Treeview.cshtml
             return _fileInfoRepository.GetFilesByUserId(userId);
         }
-        public List<string> GetFilesInFolderByUserID(int currentFolder, string userID)
+        public List<Domain.FileAggregate.FileInfo> GetFilesInFolderByUserID(int currentFolder, string userID)
         {
              return _fileInfoRepository.GetFilesInFolderByUserID(currentFolder, userID);
         }
@@ -91,6 +91,13 @@
         public List<int> GetSubfoldersByFolderID(int folderID)
         {
             return _fileInfoRepository.GetSubFolders(folderID);
+        }
+
+        //return a byte array of the image
+        public byte[] GetImageBytes(int fileID, string pathToUserFolder)
+        {
+            string path = Path.Combine(pathToUserFolder, fileID.ToString() + ".dat");
+            return File.ReadAllBytes(path);
         }
     }
 }

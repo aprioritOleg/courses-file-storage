@@ -18,7 +18,7 @@
                 updateTreeview($folderID);
             },
             error: function (xhr) {
-                 alert('Error getting data.');
+                 alert('addFolder1 - Error getting data.');
             }
         });
     }
