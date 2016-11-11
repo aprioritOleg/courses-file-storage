@@ -197,7 +197,9 @@
     <Content Include="Content\dialog\jquery-ui.css" />
     <Content Include="Content\dialog\jquery-ui.min.css" />
     <Content Include="Content\Icons\icon-docx.png" />
+    <Content Include="Content\Icons\icon-file.png" />
     <Content Include="Content\Icons\icon-folder.png" />
+    <Content Include="Content\Icons\icon-pdf.png" />
     <Content Include="Content\Icons\icon-txt.png" />
     <Content Include="Content\images\ajax-loader.gif" />
     <Content Include="Content\images\file.gif" />

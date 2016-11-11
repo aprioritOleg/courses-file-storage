@@ -91,11 +91,28 @@
         }
 
         //Returns a thumbnail into view
-        //The first parameter is a byte array that represents the file content
-        //second parameter indicates the MIME content type.
         public ActionResult GetImage(int fileID)
         {
-            return File(_fileService.GetImageBytes(fileID, Server.MapPath(getPathToUserFolder())), "image/png");
+            Domain.FileAggregate.FileInfo file = _fileService.GetFileById(fileID, User.Identity.GetUserId());
+
+            var dir = Server.MapPath("~/Content/Icons");
+            switch (file.Extension)
+            {
+                //if it is a folder
+                case null:
+                    return File(Path.Combine(dir, "icon-folder.png"), GetContentType(file.Extension));
+                case ".jpg":
+                    return File(_fileService.GetImageBytes(fileID, Server.MapPath(getPathToUserFolder())), GetContentType(file.Extension));
+                case ".png":
+                    return File(_fileService.GetImageBytes(fileID, Server.MapPath(getPathToUserFolder())), GetContentType(file.Extension));
+                case ".docx":
+                    return File(Path.Combine(dir, "icon-docx.png"), GetContentType(file.Extension));
+                case ".txt":
+                    return File(Path.Combine(dir, "icon-txt.png"), GetContentType(file.Extension));
+                case ".pdf":
+                    return File(Path.Combine(dir, "icon-pdf.png"), GetContentType(file.Extension));
+            }
+            return File(Path.Combine(dir, "icon-file.png"), GetContentType(file.Extension));
         }
         /// <summary>
         /// Download file.

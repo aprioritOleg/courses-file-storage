@@ -18,13 +18,19 @@
              .bottom-three {
                 margin-bottom: 30cm;
              }
+             #displayingData {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                top: 25%; 
+                left: 25%; 
+                height:100%;
+                width:100%;
+             }
              #dropArea {
-      background-color: lightsteelblue;
-        margin-right: auto;
-        margin-left: auto; 
-        width: 800px; 
-        height: 400px;
-        margin-top: 20%; 
+             background-color: khaki;
+              height:100%;
+              width:100%;
         }
             #progressBar {
                position: fixed;

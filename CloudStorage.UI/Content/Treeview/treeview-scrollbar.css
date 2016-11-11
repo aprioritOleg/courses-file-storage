@@ -1,6 +1,5 @@
-﻿#scrollbar {
- width:150px;
- height:300px;
- 
+﻿#scrollbar { 
  overflow:auto;
+ width:200px;
+ height:400px;
 }
