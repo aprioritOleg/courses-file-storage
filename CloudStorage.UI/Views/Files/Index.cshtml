@@ -8,6 +8,7 @@
 <link href="@Url.Content("~/Content/dialog/dialog.css")" rel="stylesheet" type="text/css" />
 <link href="@Url.Content("~/Content/dialog/jquery-ui.css")" rel="stylesheet" type="text/css" />
 <link href="@Url.Content("~/Content/Treeview/jquery.treeview.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Content/Treeview/treeview-scrollbar.css")" rel="stylesheet" type="text/css" />
 
 <script src="~/Scripts/scripts_uploading_files/upload-file-ajax.js"></script>
 <script src="~/Scripts/scripts_uploading_files/right-click-menu.js"></script>
@@ -28,7 +29,6 @@
 <input type="file" id="inputUpload" style="display: none" name="files" class="multiple" multiple>
 
     <!--custom right-click menu that allows to add files and folders-->
-<br /> <br />
 <div style="display:none; " id="contextMenu">
     <table border="0" cellpadding="0" cellspacing="0"
            style="border: thin solid #808080; cursor: default;" width="100px"
@@ -62,8 +62,9 @@
     </div>
 </div>
 
+
 <!--Displays file structure with Treeview-->
-@Html.Partial("_Treeview", Model);
+@Html.Partial("_Treeview");
 
 <!--Displays in area icons and names of files-->
 @Html.Partial("_BrowsingFiles", Model);

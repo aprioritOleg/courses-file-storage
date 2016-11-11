@@ -16,6 +16,7 @@
             success: function (data) {
                 $('div#block_view_files_folders').html(data);
                 updateTreeview($folderID);
+               
             },
             error: function (xhr) {
                  alert('addFolder1 - Error getting data.');

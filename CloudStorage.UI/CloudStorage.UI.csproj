@@ -217,6 +217,7 @@
     <Content Include="Content\images\treeview-red.gif" />
     <Content Include="Content\style-browsing-files.css" />
     <Content Include="Content\Treeview\jquery.treeview.css" />
+    <Content Include="Content\Treeview\treeview-scrollbar.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

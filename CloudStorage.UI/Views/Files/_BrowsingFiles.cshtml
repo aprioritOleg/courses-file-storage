@@ -1,13 +1,13 @@
 ﻿<!--Displays in area icons and names of files-->
 @model List<CloudStorage.Domain.FileAggregate.FileInfo>
 
+
 <div id="block_view_files_folders">
     <div onmousedown="HideMenu('contextMenu');"
          onmouseup="HideMenu('contextMenu');"
          oncontextmenu="ShowMenu('contextMenu',event);"
          class="bottom-three"
          id="dropArea">
-        @using Microsoft.AspNet.Identity;
         <div>
             @if (Model != null)
             {

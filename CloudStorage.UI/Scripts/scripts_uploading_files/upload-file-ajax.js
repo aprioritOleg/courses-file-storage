@@ -31,6 +31,7 @@
                 success: function (data) {
                     $('div#block_view_files_folders').html(data);
                     updateTreeview(folderID);
+                   
                 },
                 error: function (xhr, status, p3) {
                     alert(xhr.responseText);

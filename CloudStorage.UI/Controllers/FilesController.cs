@@ -34,8 +34,7 @@
             //List with subfolders which have to opened after adding files or folders
             ViewBag.ListSubfoldersID = new List<int>(); //treeview will be closed (folded)
 
-            //return two model for treeview and for area, where will be displayed icons and filenames
-             return View(_fileService.GetFilesByUserID(User.Identity.GetUserId()));
+            return View(_fileService.GetFilesInFolderByUserID(0, User.Identity.GetUserId()));
         }
  
         //Returns user's files in specific folder 

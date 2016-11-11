@@ -1,0 +1,6 @@
+﻿#scrollbar {
+ width:150px;
+ height:300px;
+ 
+ overflow:auto;
+}
