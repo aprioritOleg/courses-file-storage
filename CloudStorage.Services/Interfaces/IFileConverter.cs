@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CloudStorage.Domain.FileAggregate;
 
 namespace CloudStorage.Services.Interfaces
 {
+
     // <summary>
     // Defines a contract for classes that enabled editing of file.
-   public interface IFileConverter
+    public interface IFileConverter
     {
         // <summary>
         // Defines a method for converting file to HTML format.
@@ -30,4 +30,5 @@ namespace CloudStorage.Services.Interfaces
         // Changed text of file in HTML format 
         void FromHtml(string pathToFile, string htmlData);
     }
+
 }

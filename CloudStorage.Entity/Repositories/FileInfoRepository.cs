@@ -3,36 +3,33 @@
     using CloudStorage.Entity.Interfaces;
     using CloudStorage.Domain.FileAggregate;
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using System.Collections.Generic;
 
     /// <summary>
-    /// Defines implementation of the IFileRepository contract.
+    /// Defines implementation of the IFileInfoRepository contract.
     /// </summary>
-    public class FileInfoRepository : IFileInfoRepository
+    public class FileInfoRepository : ContextRepository, IFileInfoRepository
     {
-        private readonly CloudStorageDbContext _db;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="FileInfoRepository"/> class.
         /// </summary>
         public FileInfoRepository()
-        {
-            this._db = new CloudStorageDbContext();
-        }
+        { }
 
         /// <summary>
         /// Adds new file.
         /// </summary>
         /// <param name="newFile">The file for adding.</param>
-        public void Add(FileInfo newFile)
+        public int Add(FileInfo newFile)
         {
-            this._db.Files.Add(newFile);
-            this._db.SaveChanges();
+            using (var context = CreateContext())
+            {
+                context.Files.Add(newFile);
+                context.SaveChanges();
+                return newFile.Id; 
+            }
         }
-
         /// <summary>
         /// Updates specified file.
         /// </summary>
@@ -48,7 +45,15 @@
         /// <param name="id">The id of file to remove.</param>
         public void Remove(int id)
         {
-            throw new NotImplementedException();
+           using(var context = CreateContext())
+           {
+               var file = context.Files.Where(i => i.Id == id).FirstOrDefault();
+               if (file!=null)
+               {
+                   context.Files.Remove(file);
+               }
+               context.SaveChanges();
+           }
         }
 
         /// <summary>
@@ -58,8 +63,75 @@
         /// <returns>Information about file.</returns>
         public FileInfo GetFileById(int id)
         {
-            var file = this._db.Files.Where(f => f.Id == id).SingleOrDefault();
-            return (FileInfo)file;
+            using (var context = CreateContext())
+            {
+                FileInfo file = context.Files.Where(f => f.Id == id).SingleOrDefault();
+                return file;
+            }
+        }
+
+        /// <summary>
+        /// Get information about file by file id and user id.
+        /// </summary>
+        /// <param name="fileId">Identifier of file.</param>
+        /// <param name="userId">Identifier of user.</param>
+        /// <returns>Information about file.</returns>
+        public FileInfo GetFileById_UserId(int fileId, string userId)
+        {
+            using (var context = CreateContext())
+            {
+                FileInfo file = context.Files
+                                    .Where(f => f.Id == fileId).Where(user => user.OwnerId == userId)
+                                    .SingleOrDefault();
+
+                return file;
+            }
+        }
+
+        //Returns files in order to display file system in treeview
+        public List<FileInfo> GetFilesByUserId(string iserId)
+        {
+            //Select all files logged in user
+            using (var context = CreateContext())
+            {
+                return context.Files.Where(u => u.OwnerId == iserId).ToList();
+            }
+        }
+
+        //Returns name of files in order to display them in view
+        public List<FileInfo> GetFilesInFolderByUserID(int currentFolder, string userID)
+        {
+            using (var context = CreateContext())
+            {
+                //Select name of files which belong to current user in specific folder
+                return context.Files.Where(u => u.ParentID == currentFolder).Where(user => user.OwnerId == userID).ToList();
+            }
+        }
+
+        // Recursive search subfolders using current folderID
+        // search stops when root directory (0) have been reached
+        public IEnumerable<int> FindSubFoldersID(CloudStorageDbContext context, int id, bool isIdAdded)
+        {
+            if (isIdAdded)
+                yield return id;
+            int parentID = context.Files.Where(u => u.Id == id).Select(field => field.ParentID).SingleOrDefault();
+            if (parentID != 0)
+            {
+                yield return parentID;
+                foreach (int n in FindSubFoldersID(context, parentID, false))
+                {
+                   yield return n;
+                }
+            }
+        }
+        // Returns list with ID subfolders, which have to be opened in treeview
+        // after updating treeview with new files and folders
+        public List<int> GetSubFolders(int folderID)
+        {
+            using (var context = CreateContext())
+            {
+                return FindSubFoldersID(context, folderID, true).ToList();
+            }
         }
     }
 }

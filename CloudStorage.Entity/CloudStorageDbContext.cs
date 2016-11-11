@@ -7,7 +7,9 @@
 
     public class CloudStorageDbContext : IdentityDbContext<User>
     {
-        public CloudStorageDbContext() : base("CloudStorageConnection") { }
+        public CloudStorageDbContext() : base("CloudStorageConnection")
+        {
+        }
 
         public CloudStorageDbContext(string connectionName) : base(connectionName) { }
 

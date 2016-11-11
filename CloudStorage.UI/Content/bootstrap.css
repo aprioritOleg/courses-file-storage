@@ -5609,8 +5609,9 @@ body.modal-open,
 .modal-open .navbar-fixed-bottom {
   margin-right: 15px;
 }
-
+//fixed
 .modal {
+    
   position: fixed;
   top: 0;
   right: 0;
@@ -5637,6 +5638,7 @@ body.modal-open,
       -ms-transform: translate(0, 0);
           transform: translate(0, 0);
 }
+
 
 .modal-dialog {
   z-index: 1050;

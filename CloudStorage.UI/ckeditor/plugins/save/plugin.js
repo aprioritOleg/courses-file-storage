@@ -13,7 +13,7 @@
 
 		exec: function( editor ) {
 			if ( editor.fire( 'save' ) ) {
-				var $form = editor.element.$.div;
+				var $form = editor.element.$.form;
 
 				if ( $form ) {
 					try {

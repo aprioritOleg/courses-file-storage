@@ -43,7 +43,11 @@
       <HintPath>..\packages\DocX_Doc.1.0.0\lib\net40\Spire.Pdf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,12 +58,14 @@
     <Compile Include="Interfaces\IFileConverter.cs" />
     <Compile Include="Interfaces\IFileService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\DocxFileConverter.cs" />
+    <Compile Include="Services\ConverterServices\DocxFileConverter.cs" />
+    <Compile Include="Services\ConverterServices\Factory\FactoryConverter.cs" />
+    <Compile Include="Services\ConverterServices\PdfFileConverter.cs" />
+    <Compile Include="Services\ConverterServices\TxtFileConverter.cs" />
     <Compile Include="Services\FileService.cs" />
-    <Compile Include="Services\PdfFileConverter.cs" />
-    <Compile Include="Services\TxtFileConverter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

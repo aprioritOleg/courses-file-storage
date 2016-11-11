@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -170,7 +171,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_GlobalResources\FileValidation.Designer.cs">
+    <Compile Include="App_GlobalResources\FileValidation.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>FileValidation.resx</DependentUpon>
@@ -182,35 +183,73 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\FilesController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\RedactingViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bootstrap.min1.css" />
+    <Content Include="Content\dialog\dialog.css" />
+    <Content Include="Content\dialog\jquery-ui.css" />
+    <Content Include="Content\dialog\jquery-ui.min.css" />
+    <Content Include="Content\Icons\icon-docx.png" />
+    <Content Include="Content\Icons\icon-folder.png" />
+    <Content Include="Content\Icons\icon-txt.png" />
+    <Content Include="Content\images\ajax-loader.gif" />
+    <Content Include="Content\images\file.gif" />
+    <Content Include="Content\images\folder-closed.gif" />
+    <Content Include="Content\images\folder.gif" />
+    <Content Include="Content\images\minus.gif" />
+    <Content Include="Content\images\plus.gif" />
+    <Content Include="Content\images\treeview-black-line.gif" />
+    <Content Include="Content\images\treeview-black.gif" />
+    <Content Include="Content\images\treeview-default-line.gif" />
+    <Content Include="Content\images\treeview-default.gif" />
+    <Content Include="Content\images\treeview-famfamfam-line.gif" />
+    <Content Include="Content\images\treeview-famfamfam.gif" />
+    <Content Include="Content\images\treeview-gray-line.gif" />
+    <Content Include="Content\images\treeview-gray.gif" />
+    <Content Include="Content\images\treeview-red-line.gif" />
+    <Content Include="Content\images\treeview-red.gif" />
+    <Content Include="Content\style-browsing-files.css" />
+    <Content Include="Content\Treeview\jquery.treeview.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="App_Code\Treeview.cshtml" />
+    <None Include="Properties\PublishProfiles\Profile_CloudStorage.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\displays-files\show-files-in-folder.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\scripts-redacting\delete-edit.js" />
+    <Content Include="Scripts\scripts-redacting\Save.js" />
+    <Content Include="Scripts\scripts-treeview\treeview.js" />
+    <Content Include="Scripts\scripts-treeview\jquery.treeview.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\scripts_uploading_files\add-folder.js" />
+    <Content Include="Scripts\scripts_uploading_files\dialog.js" />
+    <Content Include="Scripts\scripts_uploading_files\drag-and-drop.js" />
+    <Content Include="Scripts\scripts_uploading_files\right-click-menu.js" />
+    <Content Include="Scripts\scripts_uploading_files\update-treeview.js" />
+    <Content Include="Scripts\scripts_uploading_files\upload-file-ajax.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -222,12 +261,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
@@ -239,14 +273,15 @@
     <Content Include="Views\Account\Manage.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Files\_BrowsingFiles.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Files\Index.cshtml" />
-    <Content Include="Views\Shared\_RedactLayout.cshtml" />
-    <Content Include="Views\Files\Redact.cshtml" />
+    <Content Include="Views\Files\_Treeview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\File\" />
-    <Folder Include="Views\Redact\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -274,7 +309,7 @@
   <ItemGroup>
     <Content Include="App_GlobalResources\FileValidation.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>FileValidation.Designer.cs</LastGenOutput>
+      <LastGenOutput>FileValidation.designer.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <PropertyGroup>

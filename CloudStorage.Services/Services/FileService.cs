@@ -5,9 +5,7 @@
     using CloudStorage.Services.Interfaces;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using System.IO;
 
     /// <summary>
     /// Defines an implementation of <see cref="IFileService"/> contract.
@@ -19,8 +17,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FileService"/> class.
         /// </summary>
-        /// <param name="fileInfoRepository">Instance of class which implements <see cref="IFileInfoRepository"/>.</param>        
-        /// <param name="fileRepository">Instance of class which implements <see cref="IFileRepository"/>.</param>        
+        /// <param name="fileInfoRepository">Instance of class which implements <see cref="IFileInfoRepository"/>.</param>
         public FileService(IFileInfoRepository fileInfoRepository)
         {
             this._fileInfoRepository = fileInfoRepository;
@@ -30,18 +27,39 @@
         /// Creates a new file.
         /// </summary>
         /// <param name="file">File to create.</param>
-        public void Create(FileInfo file)
+        public void Create(Domain.FileAggregate.FileInfo file, Stream fileStream, string pathToUserFolder)
         {
-            _fileInfoRepository.Add(file);
+            //Adding information about file to database using FileInfoRepository
+            //and return fileID of added file
+            int fileID = _fileInfoRepository.Add(file);
+            var fileName = fileID + ".dat";
+
+            //Folder for user's files will be created when user adds file
+            if (!Directory.Exists(pathToUserFolder))
+                Directory.CreateDirectory(pathToUserFolder);
+
+            //save file on server in user's folder
+            using (Stream destination = File.Create(Path.Combine(pathToUserFolder, fileName)))
+                Write(fileStream, destination);
+
         }
-        
-        /// <summary>
-        /// Edits specified instance of file.
-        /// </summary>
-        /// <param name="fileToEdit">File to update.</param>
-        public void Edit(FileInfo fileToEdit)
+        public List<Domain.FileAggregate.FileInfo> GetFilesByUserID(string userId)
         {
-            throw new NotImplementedException();
+            //This list will be returned to view Treeview.cshtml
+            return _fileInfoRepository.GetFilesByUserId(userId);
+        }
+        public List<Domain.FileAggregate.FileInfo> GetFilesInFolderByUserID(int currentFolder, string userID)
+        {
+            return _fileInfoRepository.GetFilesInFolderByUserID(currentFolder, userID);
+        }
+        public void Write(Stream from, Stream to)
+        {
+            for (int a = from.ReadByte(); a != -1; a = from.ReadByte())
+                to.WriteByte((byte)a);
+        }
+        public void AddNewFolder(Domain.FileAggregate.FileInfo folder)
+        {
+            _fileInfoRepository.Add(folder);
         }
 
         /// <summary>
@@ -50,17 +68,60 @@
         /// <param name="id">Identifier of file.</param>
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            string TESTED_USER_ID = "1";
+            var file = _fileInfoRepository.GetFileById(id);
+            if (file.Extension != null)
+            {
+
+                _fileInfoRepository.Remove(id);
+            }
+            else
+            {
+                //this.GetFilesInFolderByUserID();
+                var nestedFolders = this.GetSubfoldersByFolderID(id);
+                var nestedFiles = _fileInfoRepository.GetFilesInFolderByUserID(id, TESTED_USER_ID);
+                foreach (var item in nestedFiles)
+                {
+                    _fileInfoRepository.Remove(item.Id);
+                }
+                if (nestedFolders != null)
+                {
+                    foreach (var item in nestedFolders)
+                    {
+                        Delete(item);
+                    }
+                }
+            }
+
         }
 
         /// <summary>
         /// Get information about file by id.
         /// </summary>
-        /// <param name="id">Identifier of file.</param>
+        /// <param name="fileId">Identifier of file.</param>
+        /// <param name="userId">Identifier of user.</param>
         /// <returns>Information about file.</returns>
-        public FileInfo GetFileById(int id)
+        public Domain.FileAggregate.FileInfo GetFileById(int fileId, string userId)
         {
-            return this._fileInfoRepository.GetFileById(id);
+            return this._fileInfoRepository.GetFileById_UserId(fileId, userId);
+        }
+
+        public void Edit(Domain.FileAggregate.FileInfo file)
+        {
+            throw new NotImplementedException();
+        }
+        // Returns list with ID subfolders, which have to be opened in treeview
+        // after updating treeview with new files and folders
+        public List<int> GetSubfoldersByFolderID(int folderID)
+        {
+            return _fileInfoRepository.GetSubFolders(folderID);
+        }
+
+        //return a byte array of the image
+        public byte[] GetImageBytes(int fileID, string pathToUserFolder)
+        {
+            string path = Path.Combine(pathToUserFolder, fileID.ToString() + ".dat");
+            return File.ReadAllBytes(path);
         }
     }
 }
