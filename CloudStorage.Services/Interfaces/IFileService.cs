@@ -21,8 +21,10 @@
 
         List<Domain.FileAggregate.FileInfo> GetFilesByUserID(string userId);
 
-        List<string> GetFilesInFolderByUserID(int currentFolder, string userId);
+        List<Domain.FileAggregate.FileInfo> GetFilesInFolderByUserID(int currentFolder, string userId);
 
         List<int> GetSubfoldersByFolderID(int folderID);
+
+        byte[] GetImageBytes(int fileID, string pathToUserFolder);
     }
 }

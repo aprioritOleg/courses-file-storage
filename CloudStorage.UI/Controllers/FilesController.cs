@@ -36,8 +36,7 @@
             //List with subfolders which have to opened after adding files or folders
             ViewBag.ListSubfoldersID = new List<int>(); //treeview will be closed (folded)
 
-            //return two model for treeview and for area, where will be displayed icons and filenames
-             return View(new TreeViewAndBrowsingFilesModel() { TreeviewItems = _fileService.GetFilesByUserID(User.Identity.GetUserId()), IconItems = _fileService.GetFilesInFolderByUserID(0, User.Identity.GetUserId()) } );
+            return View(_fileService.GetFilesInFolderByUserID(0, User.Identity.GetUserId()));
         }
  
         //Returns user's files in specific folder 
@@ -62,7 +61,7 @@
                 },
                 Request.Files[fileName].InputStream, Server.MapPath(getPathToUserFolder()));
             }
-           
+
             return PartialView("_BrowsingFiles", _fileService.GetFilesInFolderByUserID(currentFolderID, User.Identity.GetUserId()));
         }
         //Folder will be added in table FileInfo
@@ -77,7 +76,7 @@
                                                 ParentID = currentFolderID
                                             });
             //returns partial view with model
-            return PartialView("_BrowsingFiles", _fileService.GetFilesInFolderByUserID(currentFolderID, User.Identity.GetUserId()));
+             return PartialView("_BrowsingFiles", _fileService.GetFilesInFolderByUserID(currentFolderID, User.Identity.GetUserId()));
         }
         [HttpGet]
         public PartialViewResult UpdateTreeview(int currentFolderID)
@@ -93,6 +92,30 @@
             return Path.Combine(ConfigurationManager.AppSettings[PATH_USER_FOLDER].ToString(), User.Identity.GetUserId());
         }
 
+        //Returns a thumbnail into view
+        public ActionResult GetImage(int fileID)
+        {
+            Domain.FileAggregate.FileInfo file = _fileService.GetFileById(fileID, User.Identity.GetUserId());
+
+            var dir = Server.MapPath("~/Content/Icons");
+            switch (file.Extension)
+            {
+                //if it is a folder
+                case null:
+                    return File(Path.Combine(dir, "icon-folder.png"), GetContentType(file.Extension));
+                case ".jpg":
+                    return File(_fileService.GetImageBytes(fileID, Server.MapPath(getPathToUserFolder())), GetContentType(file.Extension));
+                case ".png":
+                    return File(_fileService.GetImageBytes(fileID, Server.MapPath(getPathToUserFolder())), GetContentType(file.Extension));
+                case ".docx":
+                    return File(Path.Combine(dir, "icon-docx.png"), GetContentType(file.Extension));
+                case ".txt":
+                    return File(Path.Combine(dir, "icon-txt.png"), GetContentType(file.Extension));
+                case ".pdf":
+                    return File(Path.Combine(dir, "icon-pdf.png"), GetContentType(file.Extension));
+            }
+            return File(Path.Combine(dir, "icon-file.png"), GetContentType(file.Extension));
+        }
         /// <summary>
         /// Download file.
         /// </summary>

@@ -1,30 +1,36 @@
 ﻿<!--Displays in area icons and names of files-->
-@model List<string>
+@model List<CloudStorage.Domain.FileAggregate.FileInfo>
+
 
 <div id="block_view_files_folders">
-    <div onmousedown="HideMenu('contextMenu');"
-         onmouseup="HideMenu('contextMenu');"
-         oncontextmenu="ShowMenu('contextMenu',event);"
-         class="bottom-three"
-         id="dropArea">
-        <div>
-            @if (Model != null)
+    <div id="displayingData">
+        <input type="button" value="Upload files" onclick="addFiles();" />
+        <input type="button" value="Add folder" onclick="addFolder();" />
+        <div onmousedown="HideMenu('contextMenu');"
+             onmouseup="HideMenu('contextMenu');"
+             oncontextmenu="ShowMenu('contextMenu',event);"
+             class="bottom-three"
+             id="dropArea">
+            <div>
+                @if (Model != null)
             {
                 foreach (var file in Model)
                 {
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 property-align-center">
-                        <img src="~/Content/Icons/txt.png" width="50" height="50" />
-                        <br />
-                        @file
-                    </div>
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 property-align-center">
+                            <img src='@Url.Action("GetImage", "Files", new {fileID = file.Id})' width="60" height="60" />
+                            <br />
+                            @file.Name
+                        </div>
+                    }
                 }
-            }
-        </div>
-        <div id="progressBar">
-            <progress value="0" max="100" id="progresBar">
-                Текст
-            </progress>
+            </div>
+            <div id="progressBar">
+                <progress value="0" max="100" id="progresBar">
+                    Текст
+                </progress>
+            </div>
         </div>
     </div>
+  
 </div>
 

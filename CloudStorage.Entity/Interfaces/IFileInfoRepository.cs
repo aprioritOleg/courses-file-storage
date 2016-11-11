@@ -20,7 +20,7 @@
 
         List<FileInfo> GetFilesByUserId(string iserId);
 
-        List<string> GetFilesInFolderByUserID(int currentFolder, string userID);
+        List<FileInfo> GetFilesInFolderByUserID(int currentFolder, string userID);
 
         List<int> GetSubFolders(int folderID);
     }
