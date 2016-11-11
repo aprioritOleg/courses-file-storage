@@ -1,4 +1,9 @@
-﻿function ShowMenu(control, e) {
+﻿$(document).ready(function () {
+    $('dropArea').bind('contextmenu', function (e) {
+        return false;
+    });
+});
+function ShowMenu(control, e) {
     var posx = e.clientX + 'px';
     var posy = e.clientY + 'px';
     document.getElementById(control).style.position = 'absolute';

@@ -99,5 +99,31 @@
                 return context.Files.Where(u => u.ParentID == currentFolder).Where(user => user.OwnerId == userID).Select(field => field.Name).ToList();
             }
         }
+
+        // Recursive search subfolders using current folderID
+        // search stops when root directory (0) have been reached
+        public IEnumerable<int> FindSubFoldersID(CloudStorageDbContext context, int id, bool isIdAdded)
+        {
+            if (isIdAdded)
+                yield return id;
+            int parentID = context.Files.Where(u => u.Id == id).Select(field => field.ParentID).SingleOrDefault();
+            if (parentID != 0)
+            {
+                yield return parentID;
+                foreach (int n in FindSubFoldersID(context, parentID, false))
+                {
+                   yield return n;
+                }
+            }
+        }
+        // Returns list with ID subfolders, which have to be opened in treeview
+        // after updating treeview with new files and folders
+        public List<int> GetSubFolders(int folderID)
+        {
+            using (var context = CreateContext())
+            {
+                return FindSubFoldersID(context, folderID, true).ToList();
+            }
+        }
     }
 }
