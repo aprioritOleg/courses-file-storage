@@ -1,8 +1,0 @@
- <member name="M:Spire.Doc.Document.LoadFromFile(System.String,Spire.Doc.FileFormat,Spire.Doc.Documents.XHTMLValidationType)">
-            <summary>
-            Opens the HTML document from stream .
-            </summary>
-            <param name="fileName">Name of the file.</param>
-            <param name="formatType">Type of the format.</param>
-            <param name="validationType">Type of the validation.</param>
-        </member>

@@ -24,7 +24,7 @@ namespace CloudStorage.Services.ConverterServices
             /// <summary>
             // Create an instance of editing document and getting text from it            
             Spire.Doc.Document doc = new Spire.Doc.Document();
-            doc.LoadFromFile(pathToFile, Spire.Doc.FileFormat.Auto);
+            doc.LoadFromFile(pathToFile, Spire.Doc.FileFormat.Docx);
             string documentText = doc.GetText();
 
             // <summary>

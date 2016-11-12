@@ -21,6 +21,8 @@ namespace CloudStorage.Services.Services.ConverterServices.Factory
             const string pdf = ".pdf";
             const string txt = ".txt";
             const string docx = ".docx";
+            const string doc = ".doc";
+
             try
             {
                 switch (extension)
@@ -29,6 +31,7 @@ namespace CloudStorage.Services.Services.ConverterServices.Factory
                         return new PdfFileConverter();
 
                     case docx:
+                    case doc:
                         return new DocxFileConverter();
 
                     case txt:
